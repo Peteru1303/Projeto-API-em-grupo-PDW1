@@ -7,7 +7,6 @@ export class Cliente {
     cidade: string
 
     constructor(
-        id: number, 
         nome: string, 
         cpf: string, 
         telefone: string,
