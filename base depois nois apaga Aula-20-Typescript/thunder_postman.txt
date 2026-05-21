@@ -1,0 +1,86 @@
+npm install
+npm run build
+npm start
+
+POST
+http://localhost:3000/api/produtos
+
+{
+    "id": 2,
+    "nome": "Caneta",
+    "preco": 5.50,
+    "fabricante": {
+        "nome": "BIC",
+        "endereco": {
+            "cidade": "Manaus",
+            "pais": "Brasil"
+        }
+    }
+}
+
+--
+
+GET
+http://localhost:3000/api/produtos
+
+--
+
+GET
+http://localhost:3000/api/produtos/2
+
+--
+
+PUT
+http://localhost:3000/api/produtos/2
+
+{
+    "nome": "Caneta Azul",
+    "preco": 6.00,
+    "fabricante": {
+        "nome": "BIC Brasil",
+        "endereco": {
+            "cidade": "Sao Paulo",
+            "pais": "Brasil"
+        }
+    }
+}
+
+--
+
+DELETE
+http://localhost:3000/api/produtos/2
+
+--
+
+GET
+http://localhost:3000/api/produtos/Caneta
+
+--
+
+GET
+http://localhost:3000/api/produtos?ordem=crescente
+
+--
+
+GET
+http://localhost:3000/api/produtos?ordem=decrescente
+
+--
+
+POST
+http://localhost:3000/api/produtos
+
+{
+    "id": 3,
+    "nome": "Caneta",
+    "preco": 10.00,
+    "fabricante": {
+        "nome": "BIC",
+        "endereco": {
+            "cidade": "Manaus",
+            "pais": "Brasil"
+        }
+    }
+}
+
+
