@@ -26,6 +26,10 @@ export class ClienteRepositorio {
         return this.ClienteList.find(client => client.id === id);
     }
 
+    buscarPorCPF(cpf: string): Cliente | undefined {
+        return this.ClienteList.find(client => client.cpf === cpf);
+    }
+
     atualizarCliente(ClienteData: any, id: number): void {
         const index = this.ClienteList.findIndex(client => client.id === id);
 
