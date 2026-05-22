@@ -17,7 +17,6 @@ export class NotaFiscalRepositorio {
         this.NotaFiscalList.push(NotaFiscal);
     }
 
-
     listarNotasFiscais(): NotaFiscal[] {
         return this.NotaFiscalList;
     }

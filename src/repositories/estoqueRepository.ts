@@ -17,7 +17,6 @@ export class EstoqueRepositorio {
         this.estoqueList.push(estoque);
     }
 
-
     listarEstoque(): Estoque[] {
         return this.estoqueList;
     }

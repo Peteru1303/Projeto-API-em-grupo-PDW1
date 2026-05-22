@@ -17,13 +17,16 @@ export class CarroRepositorio {
         this.carroList.push(carro);
     }
 
-
-    listarCarro(): Carro[] {
+    listarCarros(): Carro[] {
         return this.carroList;
     }
 
     buscarPorID(id: number): Carro | undefined {
         return this.carroList.find(carro => carro.id === id);
+    }
+
+    buscarPorPlaca(placa: string): Carro | undefined {
+        return this.carroList.find(carro => carro.placa === placa);
     }
 
     atualizarCarro(carroData: any, idAlt: number): void {
