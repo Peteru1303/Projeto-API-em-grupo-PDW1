@@ -1,7 +1,6 @@
-import { Carro } from "../models/Carro";
+import { Estoque } from "../models/Estoque";
 import { CarroRepositorio } from "../repositories/carroRepository";
 import { EstoqueRepositorio } from "../repositories/estoqueRepository";
-import { NotaFiscalRepositorio } from "../repositories/notaFiscalRepository";
 
 /* Vou concluir em casa */
 /* 
@@ -11,111 +10,93 @@ significa que o item está indisponível mas ainda consta no histórico.
 • O campo data_entrada não pode ser uma data futura em relação à data atual do servidor.
 • Não pode existir mais de um registro de estoque ativo para o mesmo id_carro. Para atualizar a
 quantidade, deve-se usar o endpoint de atualização (PUT). 
-*/
-
-export class CarroService {
+ */
+export class EstoqueService {
     carroRepository = CarroRepositorio.getInstance();
     estoqueRepository = EstoqueRepositorio.getInstance();
-    notaFiscalRepository = NotaFiscalRepositorio.getInstance();
 
-    cadastrarCarro(carro: any, id: number): Carro {
-        const { marca, modelo, ano, placa, preco } = carro
-        
-        if(!placa) {
-            throw new Error ("A Placa é obrigatória") ;
+    cadastrarEstoque(estoque: any, id: number): Estoque {
+        const { id_carro, quantidade, localizacao_patio, data_entrada } = estoque;
+
+        if (!id_carro) {
+            throw new Error("Deve haver carro vinculado ao registro do estoque");
         }
 
-        let existe = this.carroRepository.buscarPorPlaca(placa)
-        if(!existe) {
-            throw new Error("Não é permitido cadastrar dois carros com a mesma placa.")
+        const carro = this.carroRepository.buscarPorID(estoque.id_carro.id);
+        if (!carro) {
+            throw new Error("O carro referenciado deve existir no sistema.");
         }
 
-        let hoje = new Date();
-        let dataMin = new Date("1950-01-01");
-        let diferencaTemporal = hoje.getTime() - dataMin.getTime(); 
-        if (diferencaTemporal < 0 || ano > (hoje.getFullYear() + 1) ) {
-            throw new Error(`O ano deve estar entre 1950 e ${(hoje.getFullYear() + 1)}`)
+        if (quantidade < 0) {
+            throw new Error("O campo quantidade deve ser um inteiro maior ou igual a zero.");
         }
 
-        if (preco > 0) {
-            throw new Error("O preço deve ser um valor maior que zero")
+        if (quantidade == 0) {
+            console.log(" O item está indisponível, mas ainda consta no histórico.");
         }
 
-        const newCarro = new Carro(carro.marca, carro.modelo, carro.ano, carro.placa, carro.preco, carro.cor);
+        const dataEntrada = new Date(data_entrada);
+        const hoje = new Date();
+        if (dataEntrada.getTime() > hoje.getTime()) {
+            throw new Error("Esse campo não pode ter uma data futura em relação à data atual do servidor.");
+        }
 
-        this.carroRepository.novoCarro(newCarro)
+        const listEstoque = this.estoqueRepository.listarEstoque();
+        const estoqueAtivo = listEstoque.find(e => e.carro.id === carro.id);
+        if (estoqueAtivo) {
+            throw new Error("Não pode existir mais de um registro de estoque ativo para o mesmo id_carro.");
+        }
 
-        return newCarro;
+        const newEstoque = new Estoque(carro, quantidade, localizacao_patio, dataEntrada);
+
+        this.estoqueRepository.novoEstoque(newEstoque);
+
+        return newEstoque;
     }
 
-    // listarCarros(ordem: any): Carro[] {
-    //     let lista = this.carroRepository.listarCarros();
+    atualizarEstoque(estoqueData: any, id: number): Estoque {
+        const estoque = this.estoqueRepository.buscarPorID(id);
+        if (!estoque) {
+            throw new Error("Estoque nao encontrado");
+        }
 
-    //     if (ordem === "crescente") {
-    //         let listaOrdenada = [...lista].sort((a, b) => a.preco - b.preco);
-    //         return listaOrdenada;
-    //     }
+        const { id_carro, quantidade, localizacao_patio, data_entrada } = estoqueData;
 
-    //     if (ordem === "decrescente") {
-    //         let listaOrdenada = [...lista].sort((a, b) => b.preco - a.preco);
-    //         return listaOrdenada;
-    //     }
+        if (!id_carro) {
+            throw new Error("Deve haver carro vinculado ao registro do estoque");
+        }
 
-    //     return lista;
-    // }
+        const carro = this.carroRepository.buscarPorID(estoqueData.id_carro.id);
+        if (!carro) {
+            throw new Error("O carro referenciado deve existir no sistema.");
+        }
 
-    // buscarPorID(id: any): Carro {
-    //     let lista = this.carroRepository.listarCarros();
-    //     let idNumero = Number(id);
-    //     let carro = lista.find(c => c.id === idNumero);
+        if (quantidade < 0) {
+            throw new Error("O campo quantidade deve ser um inteiro maior ou igual a zero.");
+        }
 
-    //     if (!carro) {
-    //         carro = lista.find(c => c.nome.toLowerCase() === String(id).toLowerCase());
-    //     }
+        if (quantidade == 0) {
+            console.log(" O item está indisponível, mas ainda consta no histórico.");
+        }
 
-    //     if (!carro) {
-    //         throw new Error("Carro nao encontrado");
-    //     }
-    //     return carro;
-    // }
+        const dataEntrada = new Date(data_entrada);
+        const hoje = new Date();
+        if (dataEntrada.getTime() > hoje.getTime()) {
+            throw new Error("Esse campo não pode ter uma data futura em relação à data atual do servidor.");
+        }
 
-    // atualizarCarro(carroData: any, idAlt: number): Carro {
-    //     const carro = this.carroRepository.buscarPorID(idAlt);
-    //     if (!carro) {
-    //         throw new Error("Carro nao encontrado");
-    //     }
-
-    //     const { nome, preco, fabricante } = carroData;
-    //     if (!nome || !preco || !fabricante) {
-    //         throw new Error("Novos dados devem conter nome, preco e fabricante");
-    //     }
-    //     if (preco <= 0) {
-    //         throw new Error("O preco deve ser maior que zero");
-    //     }
-    //     if (!fabricante.nome || !fabricante.endereco || !fabricante.endereco.cidade || !fabricante.endereco.pais) {
-    //         throw new Error("Fabricante deve conter nome, cidade e pais");
-    //     }
-
-    //     this.carroRepository.atualizarCarro(carroData, idAlt);
-    //     return carro;
-    // }
-
-    removerCarro(id: number): void {
         const listEstoque = this.estoqueRepository.listarEstoque();
-        const carro = this.carroRepository.buscarPorID(id);
-        const carroEstoque = listEstoque.find(estoque=> estoque.carro === carro);
-
-        const listNotaFiscal = this.notaFiscalRepository.listarNotasFiscais();
-        const carroNotaFiscal = listNotaFiscal.find(notaFiscal=> notaFiscal.carro === carro);
-
-        if(carroEstoque) {
-            throw new Error("Não é permitido remover um carro que possua registros em estoque.");
+        const estoqueAtivo = listEstoque.find(e => e.carro.id === carro.id && e.id !== id);
+        if (estoqueAtivo) {
+            throw new Error("Não pode existir mais de um registro de estoque ativo para o mesmo id_carro.");
         }
 
-        if(carroNotaFiscal) {
-            throw new Error("Não é permitido remover um carro que possua notas fiscais vinculadas.");
-        }
+        estoque.carro = carro;
+        estoque.quantidade = quantidade;
+        estoque.localizacao_patio = localizacao_patio;
+        estoque.data_entrada = dataEntrada;
 
-        this.carroRepository.removerCarro(id);
+        this.estoqueRepository.atualizarEstoque(estoque, id);
+        return estoque;
     }
 }
