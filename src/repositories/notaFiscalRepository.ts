@@ -25,12 +25,16 @@ export class NotaFiscalRepositorio {
         return this.NotaFiscalList.find(nota => nota.id === id);
     }
 
+    buscarPorNumeroNota(numero_nota: string): NotaFiscal | undefined {
+        return this.NotaFiscalList.find(notaFiscal => notaFiscal.numero_nota === numero_nota);
+    }
+
     atualizarNotaFiscal(NotaFiscalData: any, id: number): void {
         const index = this.NotaFiscalList.findIndex(nota => nota.id === id);
 
         if (index !== -1) {
             this.NotaFiscalList[index].numero_nota = NotaFiscalData.numero_nota;
-            this.NotaFiscalList[index].data_omissao = NotaFiscalData.data_omissao;
+            this.NotaFiscalList[index].data_emissao = NotaFiscalData.data_emissao;
             this.NotaFiscalList[index].valor_total = NotaFiscalData.valor_total;
             this.NotaFiscalList[index].cliente = NotaFiscalData.cliente;
             this.NotaFiscalList[index].vendedor = NotaFiscalData.vendedor;

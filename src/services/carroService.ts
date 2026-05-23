@@ -8,7 +8,7 @@ export class CarroService {
     estoqueRepository = EstoqueRepositorio.getInstance();
     notaFiscalRepository = NotaFiscalRepositorio.getInstance();
 
-    cadastrarCarro(carro: any, id: number): Carro {
+    cadastrarCarro(carro: any): Carro {
         const { marca, modelo, ano, placa, preco } = carro
 
         if (!placa) {

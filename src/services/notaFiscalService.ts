@@ -1,106 +1,95 @@
 import { NotaFiscal } from "../models/NotaFiscal";
+import { EstoqueRepositorio } from "../repositories/estoqueRepository";
 import { NotaFiscalRepositorio } from "../repositories/notaFiscalRepository";
-
+import { ClienteRepositorio } from "../repositories/clienteRepository";
+import { VendedorRepositorio } from "../repositories/vendedorRepository";
 /* Estava estruturando pq confundi com o carro kk ai ficou assim, 
 mas da para usar para continuar */
 
 export class NotaFiscalService {
     notaFiscalRepository = NotaFiscalRepositorio.getInstance();
+    estoqueRepository = EstoqueRepositorio.getInstance();
+    clienteRepository = ClienteRepositorio.getInstance();
+    vendedorRepository = VendedorRepositorio.getInstance();
 
-    cadastrarProduto(notaFiscal: any, id: number): NotaFiscal {
-        const { numero_nota, data_omissao, valor_total, cliente, vendedor, carro } = notaFiscal
-        
-        if(!nome || !preco || !fabricante) {
-            throw new Error ("Informacoes incompletas") ;
+    cadastrarNotaFiscal(notaFiscal: any): NotaFiscal {
+        const { numero_nota, data_emissao, valor_total, cliente, vendedor, carro } = notaFiscal
+
+        //Regra 1: Uma nota fiscal somente pode ser emitida se o carro associado possuir quantidade > 0 em estoque.
+        //Ao emitir, a quantidade em estoque é automaticamente decrementada em 1 unidade.
+
+        const listEstoque = this.estoqueRepository.listarEstoque(); //Faz a listagem do estoque
+        const estoqueCarro = listEstoque.find(e => e.carro === carro); //Acha o estoque do carro associado
+
+        if (estoqueCarro && estoqueCarro.quantidade <= 0) { //Verifica se o estoque tem o carro e se tem quantidade
+            throw new Error("Precisa ter um carro no estoque");
         }
 
-        if (!nome || !preco || !fabricante) {
-            throw new Error("Produto requer id, nome, preco e fabricante")
+        //Após a emissão da nota, o estoque do carro deve ser atualizado, diminuindo a quantidade em 1
+
+
+        //Regra 2: O campo numero_nota é obrigatório e deve ser único no sistema.
+
+        let buscarNumNota = this.notaFiscalRepository.buscarPorNumeroNota(numero_nota);
+        if (buscarNumNota) {
+            throw new Error("O numero da nota fiscal já existe");
         }
 
-        if (preco <= 0) {
-            throw new Error("O preco deve ser maior que zero")
+        //Regra 3: O campo valor_total deve ser positivo e maior que zero.
+        if (valor_total > 0) {
+            throw new Error("O valor total deve ser maior que zero");
         }
 
-        if (!fabricante.nome || !fabricante.endereco || !fabricante.endereco.cidade || !fabricante.endereco.pais) {
-            throw new Error("Fabricante deve conter nome, cidade e pais preenchidos")
+        //Regra 4: Os campos id_cliente, id_vendedor e id_carro são obrigatórios e devem referenciar registros
+        //existentes no sistema.
+
+        const listCliente = this.clienteRepository.listarClientes();
+        const clienteNotaFiscal = listCliente.find(c => c === cliente);
+
+        const listVendedor = this.vendedorRepository.listarVendedor();
+        const vendedorNotaFiscal = listVendedor.find(v => v === vendedor);
+
+        //reutilizando a pesquisa de carro da regra 1 para definir a booleana estoqueCarro
+        if (!clienteNotaFiscal || !vendedorNotaFiscal || !estoqueCarro || !carro || !vendedor || !cliente) {
+            throw new Error("Os campos cliente, vendedor e carro são obrigatórios e devem ter registro no sistema");
         }
 
-        let existe = this.produtoRepository.buscarPorID(id);
-        if (existe) {
-            throw new Error("Ja existe um produto com este ID")
+        //Regra 5: A data_emissao não pode ser uma data futura em relação à data atual do servidor.
+        if (data_emissao > Date.now()) {
+            throw new Error("A data de emissão tem que ser a data atual ou uma data anterior à atual")
         }
 
-        let lista = this.produtoRepository.listarProdutos();
-        let existeNome = lista.find(p => p.nome.toLowerCase() === nome.toLowerCase());
-        if (existeNome) {
-            throw new Error("Ja existe um produto com este nome")
-        }
+        const newNotaFiscal = new NotaFiscal(notaFiscal.numero_nota , notaFiscal.data_emissao, notaFiscal.valor_total, notaFiscal.valor_total, notaFiscal.cliente, notaFiscal.carro);
 
-        const newProduct = new Produto(id, produto.nome, produto.preco, produto.fabricante);
+        this.notaFiscalRepository.inserirNotaFiscal(newNotaFiscal)
 
-        this.produtoRepository.novoProduto(newProduct)
+        this.DecrementarEstoqueCarro(carro);
 
-        return newProduct;
+        return newNotaFiscal;
     }
 
-    listarProdutos(ordem: any): Produto[] {
-        let lista = this.produtoRepository.listarProdutos();
-
-        if (ordem === "crescente") {
-            let listaOrdenada = [...lista].sort((a, b) => a.preco - b.preco);
-            return listaOrdenada;
-        }
-
-        if (ordem === "decrescente") {
-            let listaOrdenada = [...lista].sort((a, b) => b.preco - a.preco);
-            return listaOrdenada;
-        }
-
+    //lista todos os clientes cadastrados
+    listarNotasFiscais(): NotaFiscal[] {
+        let lista = this.notaFiscalRepository.listarNotasFiscais();
         return lista;
     }
-
-    buscarPorID(id: any): Produto {
-        let lista = this.produtoRepository.listarProdutos();
+    
+    buscarPorID(id: any): NotaFiscal {
+        let lista = this.notaFiscalRepository.listarNotasFiscais();
         let idNumero = Number(id);
-        let produto = lista.find(p => p.id === idNumero);
-
-        if (!produto) {
-            produto = lista.find(p => p.nome.toLowerCase() === String(id).toLowerCase());
+        let cliente = lista.find(p => p.id === idNumero);
+        if (!cliente) {
+            throw new Error("Cliente não encontrado!!\n");
         }
-
-        if (!produto) {
-            throw new Error("Produto nao encontrado");
-        }
-        return produto;
+        return cliente;
     }
 
-    atualizarProduto(produtoData: any, idAlt: number): Produto {
-        const produto = this.produtoRepository.buscarPorID(idAlt);
-        if (!produto) {
-            throw new Error("Produto nao encontrado");
-        }
+    DecrementarEstoqueCarro(carro: any): void {
+        const listEstoque = this.estoqueRepository.listarEstoque();
+        const estoqueCarro = listEstoque.find(e => e.carro === carro);
 
-        const { nome, preco, fabricante } = produtoData;
-        if (!nome || !preco || !fabricante) {
-            throw new Error("Novos dados devem conter nome, preco e fabricante");
+        if (estoqueCarro) {
+            estoqueCarro.quantidade -= 1;
         }
-        if (preco <= 0) {
-            throw new Error("O preco deve ser maior que zero");
-        }
-        if (!fabricante.nome || !fabricante.endereco || !fabricante.endereco.cidade || !fabricante.endereco.pais) {
-            throw new Error("Fabricante deve conter nome, cidade e pais");
-        }
-
-        this.produtoRepository.atualizarProduto(produtoData, idAlt);
-        return produto;
-    }
-
-    removerProduto(idRem: number): void {
-        const produto = this.produtoRepository.buscarPorID(idRem);
-        if (!produto) {
-            throw new Error("Produto nao encontrado");
-        }
-        this.produtoRepository.removerProduto(idRem);
     }
 }

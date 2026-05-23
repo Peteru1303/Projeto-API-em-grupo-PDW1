@@ -5,7 +5,7 @@ import { Carro } from "./Carro"
 export class NotaFiscal {
     id: number
     numero_nota: string
-    data_omissao: Date
+    data_emissao: Date
     valor_total: number
     cliente: Cliente
     vendedor: Vendedor
@@ -13,7 +13,7 @@ export class NotaFiscal {
 
     constructor(
         numero_nota: string,
-        data_omissao: Date,
+        data_emissao: Date,
         valor_total: number,
         cliente: Cliente,
         vendedor: Vendedor,
@@ -21,7 +21,7 @@ export class NotaFiscal {
     ) {
         this.id = this.gerarId();
         this.numero_nota = numero_nota;
-        this.data_omissao = data_omissao;
+        this.data_emissao = data_emissao;
         this.valor_total = valor_total;
         this.cliente = cliente;
         this.vendedor = vendedor;

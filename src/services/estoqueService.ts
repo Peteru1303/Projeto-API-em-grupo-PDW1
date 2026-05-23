@@ -15,7 +15,7 @@ export class EstoqueService {
     carroRepository = CarroRepositorio.getInstance();
     estoqueRepository = EstoqueRepositorio.getInstance();
 
-    cadastrarEstoque(estoque: any, id: number): Estoque {
+    cadastrarEstoque(estoque: any): Estoque {
         const { id_carro, quantidade, localizacao_patio, data_entrada } = estoque;
 
         if (!id_carro) {
@@ -86,7 +86,7 @@ export class EstoqueService {
         }
 
         const listEstoque = this.estoqueRepository.listarEstoque();
-        const estoqueAtivo = listEstoque.find(e => e.carro.id === carro.id && e.id !== id);
+        const estoqueAtivo = listEstoque.find(e => e.carro === carro);
         if (estoqueAtivo) {
             throw new Error("Não pode existir mais de um registro de estoque ativo para o mesmo id_carro.");
         }

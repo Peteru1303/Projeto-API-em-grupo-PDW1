@@ -4,7 +4,7 @@ import { VendedorRepositorio } from "../repositories/vendedorRepository";
 export class VendedorService {
     vendedorRepository = VendedorRepositorio.getInstance();
 
-    cadastrar(vendedor: any, idV: number): Vendedor {
+    cadastrar(vendedor: any): Vendedor {
         const { nome, matricula, comissao_percentual } = vendedor
         
         if(!nome || !matricula || !comissao_percentual) {
