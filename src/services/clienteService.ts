@@ -7,7 +7,7 @@ export class ClienteService {
     clienteRepository = ClienteRepositorio.getInstance();
 
     cadastrarCliente(cliente: any): Cliente {
-        const { nome, cpf, telefone, email ,cidade } = cliente;
+        const { nome, cpf, telefone, email, cidade } = cliente;
         
         if(!cpf || !nome || !telefone) { //regra 1: IMPLEMENTADO: O campo CPF é obrigatório e deve ser único no sistema
             throw new Error ("CPF não inserido!!\n") ;
@@ -85,7 +85,7 @@ export class ClienteService {
         //regra 3: NÃO IMPLEMENTADO: Não é permitido remover um cliente que possua notas fiscais vinculadas a ele
         const cliente = this.clienteRepository.buscarPorID(idRem);
         if (!cliente) {
-            throw new Error("Produto nao encontrado");
+            throw new Error("Cliente nao encontrado");
         }
         this.clienteRepository.removerCliente(idRem);
     }
