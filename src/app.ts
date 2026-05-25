@@ -10,7 +10,7 @@ import {
  } from "./controllers/notaFiscalController";
 
 import express from "express"
-import { atualizarCliente, buscaClientePorID, cadastraCiente, listarCliente, removerCliente } from "./controllers/clienteController";
+import { atualizarCliente, buscaClientePorID, cadastraCiente, listarCliente, listarTodasNotasFiscaisCliente, removerCliente } from "./controllers/clienteController";
 
 const app = express()
 const PORT = process.env.PORT ?? 3000
@@ -26,7 +26,7 @@ app.get('/clientes/:id', buscaClientePorID);
 app.post('/clientes', cadastraCiente);
 app.put('/clientes/:id', atualizarCliente);
 app.delete('/clientes/:id', removerCliente);
-app.get('/clientes/notas/:id', listaTodasNotasFiscaisCliente);
+app.get('/clientes/notas/:id', listarTodasNotasFiscaisCliente);
 
 // vendedor
 app.get('/vendedores', listarVendedor);

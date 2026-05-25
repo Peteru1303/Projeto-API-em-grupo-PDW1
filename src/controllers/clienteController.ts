@@ -78,3 +78,19 @@ export function removerCliente(req: Request, res: Response): void {
         }
     }
 }
+
+export function listarTodasNotasFiscaisCliente(req: Request, res: Response): void {
+    try {
+        let idNFC = Number(req.params.id)
+        clienteService.listarTodasNotasFiscaisCliente(idNFC)
+        res.status(200).json({ Message: "Notas Fiscais Clientes recuperadas com sucesso" })
+    } catch (e: any) {
+        if (e.message === "Cliente nao encontrado") {
+            res.status(404).json({ Message: e.message })
+        } if (e.message === "Cliente não tem notas fiscais.") {
+            res.status(404).json({ Message: e.message })
+        } else {
+            res.status(500).json({ Message: "Erro interno da aplicacao" })
+        }
+    }
+}

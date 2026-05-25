@@ -1,9 +1,12 @@
 //Por Matheus Vieira Ladeia
 import { ClienteRepositorio } from "./../repositories/clienteRepository";
 import { Cliente } from "./../models/Cliente";
+import { NotaFiscalRepositorio } from "../repositories/notaFiscalRepository";
+import { NotaFiscal } from "../models/NotaFiscal";
 
 //cadastra um novo cliente
 export class ClienteService {
+    notaFiscalRepository = NotaFiscalRepositorio.getInstance();
     clienteRepository = ClienteRepositorio.getInstance();
 
     cadastrarCliente(cliente: any): Cliente {
@@ -59,6 +62,7 @@ export class ClienteService {
         }
         return cliente;
     }
+    
 
     atualizarCliente(ClienteData: any, idUpdt: number): Cliente {
         const cliente = this.clienteRepository.buscarPorID(idUpdt);
@@ -82,11 +86,30 @@ export class ClienteService {
 
     removerCliente(idRem: number): void {
 
-        //regra 3: NÃO IMPLEMENTADO: Não é permitido remover um cliente que possua notas fiscais vinculadas a ele
+        //regra 3: IMPLEMENTADO: Não é permitido remover um cliente que possua notas fiscais vinculadas a ele
         const cliente = this.clienteRepository.buscarPorID(idRem);
         if (!cliente) {
             throw new Error("Cliente nao encontrado");
         }
+        const listNotasFiscais = this.notaFiscalRepository.listarNotasFiscais();
+        const clienteTemNotaFiscal = listNotasFiscais.find(n => n.cliente === cliente);
+        if (clienteTemNotaFiscal){
+            throw new Error("Não pode deletar Cliente com Nota Fiscal Vinculada");
+        }
         this.clienteRepository.removerCliente(idRem);
+    }
+
+     listarTodasNotasFiscaisCliente(idNFC: number): NotaFiscal {
+
+        const cliente = this.clienteRepository.buscarPorID(idNFC);
+        if (!cliente) {
+            throw new Error("Cliente nao encontrado");
+        }
+        const listNotasFiscais = this.notaFiscalRepository.listarNotasFiscais();
+        const clienteTemNotaFiscal = listNotasFiscais.find(n => n.cliente === cliente);
+        if (!clienteTemNotaFiscal){
+            throw new Error("Cliente não tem notas fiscais.");
+        }
+        return clienteTemNotaFiscal
     }
 }
