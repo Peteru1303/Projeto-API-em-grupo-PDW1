@@ -1,16 +1,29 @@
 
-import { ClienteController } from "./controllers/clienteService";
-import { VendedorController } from "./controllers/vendedorService";
+import {
+    listarCliente,
+    buscaClientePorID,
+    cadastraCiente,
+    atualizarCliente,
+    removerCliente,
+    listarTodasNotasFiscaisCliente
+} from "./controllers/clienteController";
+import {
+    listarVendedor,
+    buscaVendedorPorID,
+    cadastraVendedor,
+    atualizaVendedor,
+    removeVendedor,
+    listaTodasNotasFiscaisVendedor
+} from "./controllers/vendedorController";
 import { CarroController } from "./controllers/carroService";
 import { EstoqueController } from "./controllers/estoqueService";
-import { 
+import {
     listarNotasFiscal,
     buscaNotaFiscaPorID,
     emiteNotaFiscal
- } from "./controllers/notaFiscalController";
+} from "./controllers/notaFiscalController";
 
 import express from "express"
-import { atualizarCliente, buscaClientePorID, cadastraCiente, listarCliente, listarTodasNotasFiscaisCliente, removerCliente } from "./controllers/clienteController";
 
 const app = express()
 const PORT = process.env.PORT ?? 3000

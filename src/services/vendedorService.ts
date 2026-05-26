@@ -1,8 +1,11 @@
 import { Vendedor } from "../models/Vendedor";
 import { VendedorRepositorio } from "../repositories/vendedorRepository";
+import { NotaFiscalRepositorio } from "../repositories/notaFiscalRepository";
+import { NotaFiscal } from "../models/NotaFiscal";
 
 export class VendedorService {
     vendedorRepository = VendedorRepositorio.getInstance();
+    notaFiscalRepository = NotaFiscalRepositorio.getInstance();
 
     cadastrar(vendedor: any): Vendedor {
         const { nome, matricula, comissao_percentual } = vendedor
@@ -16,7 +19,7 @@ export class VendedorService {
         }
 
         let lista = this.vendedorRepository.listarVendedor();
-        let existeMatricula = lista.find(v => v.nome.toLowerCase() === v.nome.toLowerCase());
+        let existeMatricula = lista.find(v => v.nome.toLowerCase() === nome.toLowerCase());
         if (existeMatricula) {
             throw new Error("Ja existe uma matricula com este nome")
         }
@@ -28,20 +31,8 @@ export class VendedorService {
         return newVendedor;
     }
 
-    listarVendedor(ordem: any): Vendedor[] {
-        let lista = this.vendedorRepository.listarVendedor();
-
-        if (ordem === "crescente") {
-            let listaOrdenada = [...lista].sort((a, b) => a.id - b.id);
-            return listaOrdenada;
-        }
-
-        if (ordem === "decrescente") {
-            let listaOrdenada = [...lista].sort((a, b) => b.id - a.id);
-            return listaOrdenada;
-        }
-
-        return lista;
+    listarVendedor(): Vendedor[] {
+        return this.vendedorRepository.listarVendedor();
     }
 
     buscarPorID(id: any): Vendedor {
@@ -59,8 +50,8 @@ export class VendedorService {
         return vendedor;
     }
 
-    atualizarVendedor(vendedorData: any, idAlt: number): Vendedor {
-        const vendedor = this.vendedorRepository.buscarPorID(idAlt);
+    atualizarVendedor(vendedorData: any, id: number): Vendedor {
+        const vendedor = this.vendedorRepository.buscarPorID(id);
         if (!vendedor) {
             throw new Error("Vendedor nao encontrado");
         }
@@ -74,21 +65,36 @@ export class VendedorService {
         }
 
         let lista = this.vendedorRepository.listarVendedor();
-        let existeMatricula = lista.find(v => v.nome.toLowerCase() === v.nome.toLowerCase());
+        let existeMatricula = lista.find(v => v.nome.toLowerCase() === nome.toLowerCase());
         if (existeMatricula) {
             throw new Error("Ja existe uma matricula com este nome")
         }
 
-        this.vendedorRepository.atualizarVendedor(vendedorData, idAlt);
+        this.vendedorRepository.atualizarVendedor(vendedorData, id);
         return vendedor;
     }
 
-    removerVendedor(idRem: number): void {
-        const vendedor = this.vendedorRepository.buscarPorID(idRem);
+    removerVendedor(id: number): void {
+        const vendedor = this.vendedorRepository.buscarPorID(id);
         if (!vendedor) {
             throw new Error("Vendedor nao encontrado");
         }
         //Adicionar condicional que não permite remover um vendedor que possua notas fiscais vinculadas a ele.
-        this.vendedorRepository.removerVendedor(idRem);
+        const listNotasFiscais = this.notaFiscalRepository.listarNotasFiscais();
+        const vendedorTemNotaFiscal = listNotasFiscais.find(n => n.vendedor === vendedor);
+        if (vendedorTemNotaFiscal) {
+            throw new Error("Não pode deletar vendedor com nota fiscal vinculada");
+        }
+        this.vendedorRepository.removerVendedor(id);
+    }
+
+    listaTodasNotasFiscaisVendedor(id: number): NotaFiscal {
+        const vendedor = this.vendedorRepository.buscarPorID(id);
+        const listNotasFiscais = this.notaFiscalRepository.listarNotasFiscais();
+        const vendedorTemNotaFiscal = listNotasFiscais.find(n => n.vendedor === vendedor);
+        if (!vendedorTemNotaFiscal){
+            throw new Error("Vendedor não tem notas fiscais.");
+        }
+        return vendedorTemNotaFiscal;
     }
 }
