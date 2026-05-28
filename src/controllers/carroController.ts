@@ -1,6 +1,6 @@
 //Responsável: Matheus
 
-import { Request, Response } from "express"
+import { Request, Response } from 'express'
 import { CarroService } from "../services/carroService"
 
 /*app.get('/carros', listarCarro);
@@ -36,8 +36,15 @@ export function buscaCarroPorID(req: Request, res: Response): void {
     }
 }
 
-//implementar listarCarroDisponivel - prazo: 27/05
-//Necessário criar função em service para listar carros disponíveis no service
+//Adicionado: 27/05
+export function listaCarroDisponivel(req: Request, res: Response): void {
+    try {
+        const carros = carroService.listarCarrosDisponíveis()
+        res.status(200).json(carros)
+    } catch (e: any) {
+        res.status(500).json({ Message: "Erro interno ao listar carros disponíveis" })
+    }
+}
 
 export function cadastraCarro(req: Request, res: Response): void {
     try {

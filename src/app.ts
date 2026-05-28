@@ -15,7 +15,14 @@ import {
     removeVendedor,
     listaTodasNotasFiscaisVendedor
 } from "./controllers/vendedorController";
-import { CarroController } from "./controllers/carroService";
+import { 
+    listarCarro,
+    buscaCarroPorID,
+    listaCarroDisponivel, 
+    cadastraCarro,
+    atualizarCarroExistente,
+    removerCarro 
+ } from "./controllers/carroController";
 import { EstoqueController } from "./controllers/estoqueService";
 import {
     listarNotasFiscal,
@@ -56,7 +63,7 @@ app.get('/carros/:id', buscaCarroPorID);
 app.get('/carros/disponiveis', listaCarroDisponivel);
 app.post('/carros', cadastraCarro);
 app.put('/carros/:id', atualizarCarroExistente);
-app.delete('/carros/:id', removeCarro);
+app.delete('/carros/:id', removerCarro);
 
 // estoque
 app.get('/estoque', listarEstoque);
