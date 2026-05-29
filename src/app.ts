@@ -23,7 +23,14 @@ import {
     atualizarCarroExistente,
     removerCarro 
  } from "./controllers/carroController";
-import { EstoqueController } from "./controllers/estoqueService";
+import { 
+    listarEstoque,
+    buscaEstoquePorID,
+    buscaEstoqueCarro,
+    cadastraEstoque,
+    atualizarEstoque,
+    removeEstoque
+ } from "./controllers/estoqueController";
 import {
     listarNotasFiscal,
     buscaNotaFiscaPorID,
