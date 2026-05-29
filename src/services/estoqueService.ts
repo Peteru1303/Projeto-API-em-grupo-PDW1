@@ -99,4 +99,35 @@ export class EstoqueService {
         this.estoqueRepository.atualizarEstoque(estoque, id);
         return estoque;
     }
+
+    listarEstoque(): Estoque[] {
+        return this.estoqueRepository.listarEstoque();
+    }
+
+    buscarPorID(id: any): Estoque {
+        const idNumero = Number(id);
+        const estoque = this.estoqueRepository.buscarPorID(idNumero);
+        if (!estoque) {
+            throw new Error("Estoque nao encontrado");
+        }
+        return estoque;
+    }
+
+    buscarPorCarro(id_carro: any): Estoque {
+        const idCarroNum = Number(id_carro);
+        const list = this.estoqueRepository.listarEstoque();
+        const estoque = list.find(e => e.carro.id === idCarroNum);
+        if (!estoque) {
+            throw new Error("Estoque do carro nao encontrado");
+        }
+        return estoque;
+    }
+
+    removerEstoque(id: number): void {
+        const estoque = this.estoqueRepository.buscarPorID(id);
+        if (!estoque) {
+            throw new Error("Estoque nao encontrado");
+        }
+        this.estoqueRepository.removerEstoque(id);
+    }
 }
