@@ -31,19 +31,11 @@ export class ClienteService {
     }
 
     //lista todos os clientes cadastrados
-    listarClientes(ordem: any): Cliente[] {
+    listarClientes(): Cliente[] {
         let lista = this.clienteRepository.listarClientes();
-
-        if (ordem === "crescente") {
-            let listaOrdenada = [...lista].sort((a, b) => a.id - b.id);
-            return listaOrdenada;
+         if (!lista) {
+            throw new Error("Cliente não encontrado!!\n");
         }
-
-        if (ordem === "decrescente") {
-            let listaOrdenada = [...lista].sort((a, b) => b.id - a.id);
-            return listaOrdenada;
-        }
-
         return lista;
     }
 

@@ -26,11 +26,14 @@ export function cadastraCiente(req: Request, res: Response): void {
 
 export function listarCliente(req: Request, res: Response): void {
     try {
-        let ordem = req.query.ordem
-        const cliente = clienteService.listarClientes(ordem)
+        const cliente = clienteService.listarClientes()
         res.status(200).json(cliente)
-    } catch (e: any) {
-        res.status(500).json({ Message: "Erro interno ao listar" })
+     } catch (e: any) {
+        if (e.message === "Cliente nao encontrado") {
+            res.status(404).json({ Message: e.message })
+        } else {
+            res.status(500).json({ Message: "Erro interno da aplicacao" })
+        }
     }
 }
 
