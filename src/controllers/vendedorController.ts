@@ -11,8 +11,8 @@ export function cadastraVendedor(req: Request, res: Response): void {
     } catch (e: any) {
         if (e.message === "Já existe esse numero de matricula") {
             res.status(409).json({ Message: e.message })
-        } if (e.message === "Matricula não inserida. Ela é obrigatório.") {
-            res.status(400).json({ Message: e.message })
+        } else if (e.message === "Matricula não inserida. Ela é obrigatório.") {
+            res.status(400).json({ Message: e.message }) //corrigo 'if' para 'else if' para evitar que o mesmo erro seja tratado em dois blocos diferentes
         } else {
             res.status(400).json({ Message: "Erro desconhecido" })
         }
@@ -32,7 +32,7 @@ export function listarVendedor(req: Request, res: Response): void {
 
 export function buscaVendedorPorID(req: Request, res: Response): void {
     try {
-        let idBusca = req.params.id
+        let idBusca = Number(req.params.id) //corrigo para Number, pois o id é do tipo number, e o service espera um number para buscar por ID. Se for string, o service não encontrará o vendedor mesmo que exista.
         const vendedor = vendedorService.buscarPorID(idBusca)
         res.status(200).json(vendedor)
     } catch (e: any) {
@@ -85,8 +85,8 @@ export function removeVendedor(req: Request, res: Response): void {
 export function listaTodasNotasFiscaisVendedor(req: Request, res: Response): void {
     try {
         let id = Number(req.params.id)
-        vendedorService.listaTodasNotasFiscaisVendedor(id)
-        res.status(200).json({ Message: "Notas Fiscais Vendedores recuperadas com sucesso" })
+        const notasFiscais = vendedorService.listaTodasNotasFiscaisVendedor(id)
+        res.status(200).json(notasFiscais) //CORRIGIDO retorno do json
     } catch (e: any) {
         if (e.message === "Vendedor nao encontrado") {
             res.status(404).json({ Message: e.message })

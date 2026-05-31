@@ -1,0 +1,5 @@
+Vendedor Controller:
+- Atualizar os números e erros
+- Mensagem de erro alinhada com o throw errors de vendedor service
+- Se necessário alterar vendedor service para alinhar com o controller
+
