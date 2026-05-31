@@ -97,8 +97,7 @@ export class CarroService {
 
     buscarPorID(id: any): Carro {
             let lista = this.carroRepository.listarCarros();
-            let idNumero = Number(id);
-            let carro = lista.find(p => p.id === idNumero);
+            let carro = lista.find(p => p.id === id);
     
             if (!carro) {
                 throw new Error("Carro não encontrado!!\n");
