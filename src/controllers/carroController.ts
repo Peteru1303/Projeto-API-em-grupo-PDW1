@@ -1,48 +1,38 @@
-//Responsável: Matheus
-
 import { Request, Response } from 'express'
 import { CarroService } from "../services/carroService"
-
-/*app.get('/carros', listarCarro);
-app.get('/carros/:id', buscaCarroPorID);
-app.get('/carros/disponiveis', listaCarroDisponivel);
-app.post('/carros', cadastraCarro);
-app.put('/carros/:id', atualizarCarroExistente);
-app.delete('/carros/:id', removeCarro);*/
 
 const carroService = new CarroService();
 
 export function listarCarro(req: Request, res: Response): void {
     try {
         let ordem = req.query.ordem
-        const carro = carroService.listarCarros(ordem) //Necessita implementar funçaõ em service
+        const carro = carroService.listarCarros(ordem) 
         res.status(200).json(carro)
     } catch (e: any) {
-        res.status(500).json({ Message: "Erro interno ao listar" })
+        res.status(400).json({ Message: "Erro interno ao listar" })
     }
 }
 
 export function buscaCarroPorID(req: Request, res: Response): void {
     try {
         let idBusca = req.params.id
-        const carro = carroService.buscarPorID(idBusca) //Necessita implementar funçaõ em service
+        const carro = carroService.buscarPorID(idBusca) 
         res.status(200).json(carro)
     } catch (e: any) {
-        if (e.message === "Cliente nao encontrado") {
+        if (e.message === "Carro não encontrado!!\n") {
             res.status(404).json({ Message: e.message })
         } else {
-            res.status(500).json({ Message: "Erro interno da aplicacao" })
+            res.status(400).json({ Message: e.message })
         }
     }
 }
 
-//Adicionado: 27/05
 export function listaCarroDisponivel(req: Request, res: Response): void {
     try {
         const carros = carroService.listarCarrosDisponíveis()
         res.status(200).json(carros)
     } catch (e: any) {
-        res.status(500).json({ Message: "Erro interno ao listar carros disponíveis" })
+        res.status(400).json({ Message: e.message })
     }
 }
 
@@ -54,12 +44,12 @@ export function cadastraCarro(req: Request, res: Response): void {
 
         res.status(201).json(carro)
     } catch (e: any) {
-        if (e.message === "Não é permitido cadastrar 2 carros") {
+        if (e.message === "Não é permitido cadastrar dois carros com a mesma placa.") {
             res.status(409).json({ Message: e.message })
-        } if (e.message === "Placa não inserida. Ela é obrigatório.") {
+        } if (e.message === "A Placa é obrigatória" || e.message === "O ano deve estar entre 1950 e a data atual" || e.message === "O preço deve ser um valor maior que zero") {
             res.status(400).json({ Message: e.message })
         } else {
-            res.status(400).json({ Message: "Erro desconhecido" })
+            res.status(400).json({ Message: e.message })
         }
     }
 }
@@ -73,9 +63,9 @@ export function atualizarCarroExistente(req: Request, res: Response): void {
 
         res.status(200).json(carro)
     } catch (e: any) {
-        if (e.message === "Cliente nao encontrado") {
+        if (e.message === "Carro não cadastrado!!\n") {
             res.status(404).json({ Message: e.message })
-        } else {
+        } if (e.message === "Novos dados devem conter marca, modelo, ano, placa e preco") {
             res.status(400).json({ Message: e.message })
         }
     }
@@ -89,10 +79,9 @@ export function removerCarro(req: Request, res: Response): void {
         
         res.status(200).json({ Message: "Carro removido com sucesso" })
     } catch (e: any) {
-        if (e.message === "Cliente nao encontrado") {
-            res.status(404).json({ Message: e.message })
-        } else {
-            res.status(422).json({ Message: "Erro interno ao remover" })
+        if (e.message === "Não é permitido remover um carro que possua registros em estoque." || e.message === "Não é permitido remover um carro que possua notas fiscais vinculadas.") {
+            res.status(422).json({ Message: e.message })
         }
+        res.status(400).json({ Message: e.message })
     }
 }
