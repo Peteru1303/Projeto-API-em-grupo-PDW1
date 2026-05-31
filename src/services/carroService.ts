@@ -21,9 +21,9 @@ export class CarroService {
         }
 
         let hoje = new Date();
-        let dataMin = new Date("1950-01-01");
-        let diferencaTemporal = hoje.getTime() - dataMin.getTime();
-        if (diferencaTemporal < 0 && ano > (hoje.getFullYear() + 1)) {
+        // let dataMin = new Date("1950-01-01");
+        // let diferencaTemporal = hoje.getTime() - dataMin.getTime();
+        if (ano < 1950 || ano > (hoje.getFullYear() + 1)) {
             throw new Error("O ano deve estar entre 1950 e a data atual")
         }
 
@@ -97,8 +97,7 @@ export class CarroService {
 
     buscarPorID(id: any): Carro {
             let lista = this.carroRepository.listarCarros();
-            let idNumero = Number(id);
-            let carro = lista.find(p => p.id === idNumero);
+            let carro = lista.find(p => p.id === id);
     
             if (!carro) {
                 throw new Error("Carro não encontrado!!\n");
