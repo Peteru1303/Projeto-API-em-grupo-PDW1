@@ -12,15 +12,15 @@ export class ClienteService {
     cadastrarCliente(cliente: any): Cliente {
         const { nome, cpf, telefone, email, cidade } = cliente;
         
-        if(!cpf || !nome || !telefone) { //regra 1: IMPLEMENTADO: O campo CPF é obrigatório e deve ser único no sistema
-            throw new Error ("CPF não inserido!!\n") ;
+        if(!cpf || !nome || !telefone) { //regra 1: IMPLEMENTADO: O campo CPF, nome e telefone sao obrigatorios
+            throw new Error ("CPF, nome ou telefone nao inseridos.") ;
         }
 
         //regra 2: IMPLEMENTADO: Não é permitido cadastrar dois clientes com o mesmo CPF
 
         let buscarCliente = this.clienteRepository.buscarPorCPF(cpf);
         if (buscarCliente) {
-            throw new Error("O CPF digitado já se encontra no banco de dados");
+            throw new Error("CPF digitado já existe");
         }
 
         const newCliente = new Cliente(cliente.nome, cliente.cpf, cliente.telefone, email, cidade);
@@ -34,7 +34,7 @@ export class ClienteService {
     listarClientes(): Cliente[] {
         let lista = this.clienteRepository.listarClientes();
          if (!lista) {
-            throw new Error("Cliente não encontrado!!\n");
+            throw new Error("Cliente não encontrado!!");
         }
         return lista;
     }
@@ -50,7 +50,7 @@ export class ClienteService {
         }
 
         if (!cliente) {
-            throw new Error("Cliente não encontrado!!\n");
+            throw new Error("Cliente não encontrado!!");
         }
         return cliente;
     }
@@ -59,7 +59,7 @@ export class ClienteService {
     atualizarCliente(ClienteData: any, idUpdt: number): Cliente {
         const cliente = this.clienteRepository.buscarPorID(idUpdt);
         if (!cliente) {
-            throw new Error("Cliente não cadastrado!!\n");
+            throw new Error("Cliente não cadastrado!!");
         }
 
         const { nome, cpf, telefone, email ,cidade } = ClienteData;

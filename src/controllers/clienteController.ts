@@ -7,20 +7,13 @@ const clienteService = new ClienteService()
 export function cadastraCiente(req: Request, res: Response): void {
     try {
         let data: any = req.body
-
-        if (!data.nome || !data.preco || !data.fabricante) {
-            throw new Error("Cliente requer id, nome, preco e fabricante")
-        }
-
-        let idNum = Number(data.id)
-
         const cliente = clienteService.cadastrarCliente(data)
 
         res.status(201).json(cliente)
     } catch (e: any) {
         if (e.message === "CPF digitado já existe") {
             res.status(409).json({ Message: e.message })
-        } if (e.message === "CPF não inserido. Ele é obrigatório.") {
+        } if (e.message === "CPF, nome ou telefone nao inseridos.") {
             res.status(400).json({ Message: e.message })
         } else {
             res.status(400).json({ Message: "Erro desconhecido" })
@@ -36,7 +29,7 @@ export function listarCliente(req: Request, res: Response): void {
         if (e.message === "Cliente nao encontrado") {
             res.status(404).json({ Message: e.message })
         } else {
-            res.status(500).json({ Message: "Erro interno da aplicacao" })
+            res.status(400).json({ Message: "Erro desconhecido" })
         }
     }
 }
@@ -66,6 +59,10 @@ export function atualizarCliente(req: Request, res: Response): void {
     } catch (e: any) {
         if (e.message === "Cliente nao encontrado") {
             res.status(404).json({ Message: e.message })
+        } if (e.message === "O CPF digitado já se encontra no banco de dados") {
+            res.status(409).json({ Message: e.message })
+        } if (e.message === "Novos dados devem conter nome, cpf e telefone") {
+            res.status(400).json({ Message: e.message })
         } else {
             res.status(400).json({ Message: e.message })
         }
@@ -80,10 +77,10 @@ export function removerCliente(req: Request, res: Response): void {
     } catch (e: any) {
         if (e.message === "Cliente nao encontrado") {
             res.status(404).json({ Message: e.message })
-        } if (e.message === "Não pode deletar Cliente") {
-            res.status(422).json({ Message: "Não pode deletar Cliente com notasFiscais vinculada" })
+        } if (e.message === "Não pode deletar Cliente com Nota Fiscal Vinculada") {
+            res.status(422).json({ Message: e.message })
         }
-        res.status(400).json({ Message: e.message })
+        res.status(400).json({ Message: "Erro desconhecido" })
     }
 }
 
@@ -93,8 +90,10 @@ export function listarTodasNotasFiscaisCliente(req: Request, res: Response): voi
         clienteService.listarTodasNotasFiscaisCliente(idNFC)
         res.status(200).json({ Message: "Notas Fiscais Clientes recuperadas com sucesso" })
     } catch (e: any) {
-        if (e.message === "ID não inserido. Ele é obrigatório.") {
-            res.status(400).json({ Message: e.message })
+        if (e.message === "Cliente nao encontrado") {
+            res.status(404).json({ Message: e.message })
+        } if (e.message === "Cliente não tem notas fiscais.") {
+            res.status(404).json({ Message: e.message })
         } else {
             res.status(400).json({ Message: "Erro desconhecido" })
         }
