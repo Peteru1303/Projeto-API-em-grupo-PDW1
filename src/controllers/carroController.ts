@@ -9,7 +9,7 @@ export function listarCarro(req: Request, res: Response): void {
         const carro = carroService.listarCarros(ordem) 
         res.status(200).json(carro)
     } catch (e: any) {
-        res.status(400).json({ Message: "Erro interno ao listar" })
+        res.status(404).json({ Message: e.message })
     }
 }
 
@@ -32,7 +32,7 @@ export function listaCarroDisponivel(req: Request, res: Response): void {
         const carros = carroService.listarCarrosDisponíveis()
         res.status(200).json(carros)
     } catch (e: any) {
-        res.status(400).json({ Message: e.message })
+        res.status(404).json({ Message: e.message })
     }
 }
 
@@ -48,9 +48,7 @@ export function cadastraCarro(req: Request, res: Response): void {
             res.status(409).json({ Message: e.message })
         } if (e.message === "A Placa é obrigatória" || e.message === "O ano deve estar entre 1950 e a data atual" || e.message === "O preço deve ser um valor maior que zero") {
             res.status(400).json({ Message: e.message })
-        } else {
-            res.status(400).json({ Message: e.message })
-        }
+        } 
     }
 }
 
@@ -59,7 +57,7 @@ export function atualizarCarroExistente(req: Request, res: Response): void {
         let idAlt = Number(req.params.id)
         let data: any = req.body
 
-        const carro = carroService.atualizarCarro(data, idAlt) //Necessita implementar funçaõ em service
+        const carro = carroService.atualizarCarro(data, idAlt) 
 
         res.status(200).json(carro)
     } catch (e: any) {
@@ -82,6 +80,6 @@ export function removerCarro(req: Request, res: Response): void {
         if (e.message === "Não é permitido remover um carro que possua registros em estoque." || e.message === "Não é permitido remover um carro que possua notas fiscais vinculadas.") {
             res.status(422).json({ Message: e.message })
         }
-        res.status(400).json({ Message: e.message })
+        res.status(404).json({ Message: e.message })
     }
 }

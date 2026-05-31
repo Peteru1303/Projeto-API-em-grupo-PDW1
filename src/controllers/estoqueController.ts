@@ -9,9 +9,21 @@ export function cadastraEstoque(req: Request, res: Response): void {
         const estoque = estoqueService.cadastrarEstoque(data)
         res.status(201).json(estoque)
     } catch (e: any) {
-        res.status(400).json({
-            Message: e.message
-        })
+        if (e.message === "O campo quantidade deve ser um inteiro maior ou igual a zero." || e.message === "O item está indisponível, mas ainda consta no histórico." || e.message === "Esse campo não pode ter uma data futura em relação à data atual do servidor.") {
+            res.status(400).json({ 
+                Message: e.message 
+            })
+        }
+        if (e.message === "Estoque nao encontrado") {
+            res.status(404).json({ 
+                Message: e.message 
+            })
+        }
+        if (e.message === "Deve haver carro vinculado ao registro do estoque" || e.message === "O carro referenciado deve existir no sistema." || e.message === "Não pode existir mais de um registro de estoque ativo para o mesmo id_carro.") {
+            res.status(409).json({ 
+                Message: e.message 
+            })
+        }
     }
 }
 
@@ -20,8 +32,8 @@ export function listarEstoque(req: Request, res: Response): void {
         const estoque = estoqueService.listarEstoque()
         res.status(200).json(estoque)
     } catch (e: any) {
-        res.status(500).json({ 
-            Message: "Erro interno ao listar" 
+        res.status(404).json({ 
+            Message: e.message 
         })
     }
 }
@@ -32,15 +44,9 @@ export function buscaEstoquePorID(req: Request, res: Response): void {
         const estoque = estoqueService.buscarPorID(idBusca)
         res.status(200).json(estoque)
     } catch (e: any) {
-        if (e.message === "Estoque nao encontrado") {
             res.status(404).json({ 
                 Message: e.message 
             })
-        } else {
-            res.status(500).json({ 
-                Message: "Erro interno da aplicacao" 
-            })
-        }
     }
 }
 
@@ -55,8 +61,8 @@ export function buscaEstoqueCarro(req: Request, res: Response): void {
                 Message: e.message 
             })
         } else {
-            res.status(500).json({ 
-                Message: "Erro interno da aplicacao" 
+            res.status(400).json({ 
+                Message: e.message 
             })
         }
     }
@@ -71,6 +77,10 @@ export function atualizarEstoque(req: Request, res: Response): void {
     } catch (e: any) {
         if (e.message === "Estoque nao encontrado") {
             res.status(404).json({ 
+                Message: e.message 
+            })
+        } if (e.message === "Deve haver carro vinculado ao registro do estoque" || e.message === "Não pode existir mais de um registro de estoque ativo para o mesmo id_carro.") {
+            res.status(409).json({ 
                 Message: e.message 
             })
         } else {
@@ -94,7 +104,7 @@ export function removeEstoque(req: Request, res: Response): void {
                 Message: e.message 
             })
         } else {
-            res.status(422).json({ 
+            res.status(400).json({ 
                 Message: e.message 
             })
         }

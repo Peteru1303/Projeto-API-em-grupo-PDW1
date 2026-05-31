@@ -32,7 +32,7 @@ export class EstoqueService {
         }
 
         if (quantidade == 0) {
-            console.log(" O item está indisponível, mas ainda consta no histórico.");
+            console.log("O item está indisponível, mas ainda consta no histórico.");
         }
 
         const dataEntrada = new Date(data_entrada);
