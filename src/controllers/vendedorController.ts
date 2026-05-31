@@ -24,7 +24,7 @@ export function listarVendedor(req: Request, res: Response): void {
         const vendedor = vendedorService.listarVendedor()
         res.status(200).json(vendedor)
     } catch (e: any) {
-        res.status(500).json({ 
+        res.status(400).json({ 
             Message: "Erro interno ao listar" 
         })
     }
@@ -41,7 +41,7 @@ export function buscaVendedorPorID(req: Request, res: Response): void {
                 Message: e.message 
             })
         } else {
-            res.status(500).json({ 
+            res.status(400).json({ 
                 Message: "Erro interno da aplicacao" 
             })
         }
@@ -77,7 +77,7 @@ export function removeVendedor(req: Request, res: Response): void {
         if (e.message === "Vendedor nao encontrado") {
             res.status(404).json({ Message: e.message })
         } else {
-            res.status(422).json({ Message: "Erro interno ao remover" })
+            res.status(422).json({ Message: "Não é permitido a remoção de vendedores vinculados à notas fiscais" })
         }
     }
 }
@@ -91,7 +91,7 @@ export function listaTodasNotasFiscaisVendedor(req: Request, res: Response): voi
         if (e.message === "Vendedor nao encontrado") {
             res.status(404).json({ Message: e.message })
         } else {
-            res.status(500).json({ Message: "Erro interno da aplicacao" })
+            res.status(400).json({ Message: "Erro interno da aplicacao" })
         }
     }
 }
