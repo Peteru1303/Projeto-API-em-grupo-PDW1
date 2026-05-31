@@ -7,11 +7,15 @@ export function cadastraVendedor(req: Request, res: Response): void {
     try {
         let data: any = req.body
         const vendedor = vendedorService.cadastrar(data)
-        res.status(200).json(vendedor)
+        res.status(201).json(vendedor)
     } catch (e: any) {
-        res.status(400).json({
-            Message: e.message
-        })
+        if (e.message === "Já existe esse numero de matricula") {
+            res.status(409).json({ Message: e.message })
+        } if (e.message === "Matricula não inserida. Ela é obrigatório.") {
+            res.status(400).json({ Message: e.message })
+        } else {
+            res.status(400).json({ Message: "Erro desconhecido" })
+        }
     }
 }
 
@@ -73,7 +77,7 @@ export function removeVendedor(req: Request, res: Response): void {
         if (e.message === "Vendedor nao encontrado") {
             res.status(404).json({ Message: e.message })
         } else {
-            res.status(500).json({ Message: "Erro interno ao remover" })
+            res.status(422).json({ Message: "Erro interno ao remover" })
         }
     }
 }

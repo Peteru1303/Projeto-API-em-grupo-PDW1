@@ -52,11 +52,15 @@ export function cadastraCarro(req: Request, res: Response): void {
 
         const carro = carroService.cadastrarCarro(data)
 
-        res.status(200).json(carro)
+        res.status(201).json(carro)
     } catch (e: any) {
-        res.status(400).json({
-            Message: e.message
-        })
+        if (e.message === "Não é permitido cadastrar 2 carros") {
+            res.status(409).json({ Message: e.message })
+        } if (e.message === "Placa não inserida. Ela é obrigatório.") {
+            res.status(400).json({ Message: e.message })
+        } else {
+            res.status(400).json({ Message: "Erro desconhecido" })
+        }
     }
 }
 
@@ -88,7 +92,7 @@ export function removerCarro(req: Request, res: Response): void {
         if (e.message === "Cliente nao encontrado") {
             res.status(404).json({ Message: e.message })
         } else {
-            res.status(500).json({ Message: "Erro interno ao remover" })
+            res.status(422).json({ Message: "Erro interno ao remover" })
         }
     }
 }

@@ -7,7 +7,7 @@ export function cadastraEstoque(req: Request, res: Response): void {
     try {
         let data: any = req.body
         const estoque = estoqueService.cadastrarEstoque(data)
-        res.status(200).json(estoque)
+        res.status(201).json(estoque)
     } catch (e: any) {
         res.status(400).json({
             Message: e.message
@@ -94,7 +94,7 @@ export function removeEstoque(req: Request, res: Response): void {
                 Message: e.message 
             })
         } else {
-            res.status(500).json({ 
+            res.status(422).json({ 
                 Message: e.message 
             })
         }

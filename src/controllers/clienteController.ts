@@ -16,11 +16,15 @@ export function cadastraCiente(req: Request, res: Response): void {
 
         const cliente = clienteService.cadastrarCliente(data)
 
-        res.status(200).json(cliente)
+        res.status(201).json(cliente)
     } catch (e: any) {
-        res.status(400).json({
-            Message: e.message
-        })
+        if (e.message === "CPF digitado já existe") {
+            res.status(409).json({ Message: e.message })
+        } if (e.message === "CPF não inserido. Ele é obrigatório.") {
+            res.status(400).json({ Message: e.message })
+        } else {
+            res.status(400).json({ Message: "Erro desconhecido" })
+        }
     }
 }
 
@@ -28,7 +32,7 @@ export function listarCliente(req: Request, res: Response): void {
     try {
         const cliente = clienteService.listarClientes()
         res.status(200).json(cliente)
-     } catch (e: any) {
+    } catch (e: any) {
         if (e.message === "Cliente nao encontrado") {
             res.status(404).json({ Message: e.message })
         } else {
@@ -46,7 +50,7 @@ export function buscaClientePorID(req: Request, res: Response): void {
         if (e.message === "Cliente nao encontrado") {
             res.status(404).json({ Message: e.message })
         } else {
-            res.status(500).json({ Message: "Erro interno da aplicacao" })
+            res.status(400).json({ Message: "Erro desconhecido" })
         }
     }
 }
@@ -76,9 +80,10 @@ export function removerCliente(req: Request, res: Response): void {
     } catch (e: any) {
         if (e.message === "Cliente nao encontrado") {
             res.status(404).json({ Message: e.message })
-        } else {
-            res.status(500).json({ Message: "Erro interno ao remover" })
+        } if (e.message === "Não pode deletar Cliente") {
+            res.status(422).json({ Message: "Não pode deletar Cliente com notasFiscais vinculada" })
         }
+        res.status(400).json({ Message: e.message })
     }
 }
 
@@ -88,12 +93,10 @@ export function listarTodasNotasFiscaisCliente(req: Request, res: Response): voi
         clienteService.listarTodasNotasFiscaisCliente(idNFC)
         res.status(200).json({ Message: "Notas Fiscais Clientes recuperadas com sucesso" })
     } catch (e: any) {
-        if (e.message === "Cliente nao encontrado") {
-            res.status(404).json({ Message: e.message })
-        } if (e.message === "Cliente não tem notas fiscais.") {
-            res.status(404).json({ Message: e.message })
+        if (e.message === "ID não inserido. Ele é obrigatório.") {
+            res.status(400).json({ Message: e.message })
         } else {
-            res.status(500).json({ Message: "Erro interno da aplicacao" })
+            res.status(400).json({ Message: "Erro desconhecido" })
         }
     }
 }

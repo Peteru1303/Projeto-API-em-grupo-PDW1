@@ -26,7 +26,7 @@ export function emiteNotaFiscal(req: Request, res: Response): void {
     try {
         let data: any = req.body
         const produto = notaFiscalService.cadastrarNotaFiscal(data)
-        res.status(200).json(produto)
+        res.status(201).json(produto)
     } catch (e: any) {
         if (e.message === "Erro 400, produto nao encontrado") {
             res.status(404).json({ Message: e.message })

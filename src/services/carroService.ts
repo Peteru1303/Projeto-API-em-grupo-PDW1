@@ -16,7 +16,7 @@ export class CarroService {
         }
 
         let existe = this.carroRepository.buscarPorPlaca(placa)
-        if (!existe) {
+        if (existe) {
             throw new Error("Não é permitido cadastrar dois carros com a mesma placa.")
         }
 
@@ -27,7 +27,7 @@ export class CarroService {
             throw new Error(`O ano deve estar entre 1950 e ${(hoje.getFullYear() + 1)}`)
         }
 
-        if (preco > 0) {
+        if (preco <= 0) {
             throw new Error("O preço deve ser um valor maior que zero")
         }
 
