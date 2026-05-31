@@ -86,6 +86,11 @@ export class CarroService {
                 throw new Error("Novos dados devem conter marca, modelo, ano, placa e preco");
             }
 
+            let existe = this.carroRepository.buscarPorPlaca(placa)
+            if (existe) {
+                throw new Error("Não é permitido cadastrar dois carros com a mesma placa.")
+            }
+
             this.carroRepository.atualizarCarro(carroData, id);
             return carro;
         }

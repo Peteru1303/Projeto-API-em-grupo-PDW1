@@ -54,10 +54,10 @@ export function cadastraCarro(req: Request, res: Response): void {
 
 export function atualizarCarroExistente(req: Request, res: Response): void {
     try {
-        let idAlt = Number(req.params.id)
+        let id = Number(req.params.id)
         let data: any = req.body
 
-        const carro = carroService.atualizarCarro(data, idAlt) 
+        const carro = carroService.atualizarCarro(data, id) 
 
         res.status(200).json(carro)
     } catch (e: any) {
@@ -65,6 +65,8 @@ export function atualizarCarroExistente(req: Request, res: Response): void {
             res.status(404).json({ Message: e.message })
         } if (e.message === "Novos dados devem conter marca, modelo, ano, placa e preco") {
             res.status(400).json({ Message: e.message })
+        } if (e.message === "Não é permitido cadastrar dois carros com a mesma placa.") {
+            res.status(409).json({ Message: e.message })
         }
     }
 }
