@@ -5,8 +5,7 @@ const carroService = new CarroService();
 
 export function listarCarro(req: Request, res: Response): void {
     try {
-        let ordem = req.query.ordem
-        const carro = carroService.listarCarros(ordem) 
+        const carro = carroService.listarCarros() 
         res.status(200).json(carro)
     } catch (e: any) {
         res.status(404).json({ Message: e.message })
@@ -61,12 +60,10 @@ export function atualizarCarroExistente(req: Request, res: Response): void {
 
         res.status(200).json(carro)
     } catch (e: any) {
-        if (e.message === "Carro não cadastrado!!\n") {
+        if (e.message === "Carro não cadastrado!!!") {
             res.status(404).json({ Message: e.message })
-        } if (e.message === "Novos dados devem conter marca, modelo, ano, placa e preco") {
+        } if (e.message === "Novos dados devem conter marca, modelo, ano e preco") {
             res.status(400).json({ Message: e.message })
-        } if (e.message === "Não é permitido cadastrar dois carros com a mesma placa.") {
-            res.status(409).json({ Message: e.message })
         }
     }
 }

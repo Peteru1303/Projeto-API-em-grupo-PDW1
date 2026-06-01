@@ -22,7 +22,7 @@ export class EstoqueService {
             throw new Error("Deve haver carro vinculado ao registro do estoque");
         }
 
-        const carro = this.carroRepository.buscarPorID(estoque.id_carro.id);
+        const carro = this.carroRepository.buscarPorID(estoque.id_carro);
         if (!carro) {
             throw new Error("O carro referenciado deve existir no sistema.");
         }
