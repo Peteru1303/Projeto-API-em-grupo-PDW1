@@ -16,14 +16,14 @@ export class EstoqueService {
     estoqueRepository = EstoqueRepositorio.getInstance();
 
     cadastrarEstoque(estoque: any): Estoque {
-        const { id_carro, quantidade, localizacao_patio, data_entrada } = estoque;
+        const {carro, quantidade, localizacao_patio, data_entrada } = estoque;
 
-        if (!id_carro) {
+        if (!carro) {
             throw new Error("Deve haver carro vinculado ao registro do estoque");
         }
 
-        const carro = this.carroRepository.buscarPorID(estoque.id_carro);
-        if (!carro) {
+        const carroexiste = this.carroRepository.buscarPorID(estoque.carro);
+        if (!carroexiste) {
             throw new Error("O carro referenciado deve existir no sistema.");
         }
 
@@ -44,7 +44,7 @@ export class EstoqueService {
         const listEstoque = this.estoqueRepository.listarEstoque();
         const estoqueAtivo = listEstoque.find(e => e.carro.id === carro.id);
         if (estoqueAtivo) {
-            throw new Error("Não pode existir mais de um registro de estoque ativo para o mesmo id_carro.");
+            throw new Error("Não pode existir mais de um registro de estoque ativo para o mesmo carro.");
         }
 
         const newEstoque = new Estoque(carro, quantidade, localizacao_patio, dataEntrada);
@@ -60,14 +60,14 @@ export class EstoqueService {
             throw new Error("Estoque nao encontrado");
         }
 
-        const { id_carro, quantidade, localizacao_patio, data_entrada } = estoqueData;
+        const {carro, quantidade, localizacao_patio, data_entrada } = estoqueData;
 
-        if (!id_carro) {
+        if (!carro) {
             throw new Error("Deve haver carro vinculado ao registro do estoque");
         }
 
-        const carro = this.carroRepository.buscarPorID(estoqueData.id_carro);
-        if (!carro) {
+        const carroexiste = this.carroRepository.buscarPorID(estoqueData.carro);
+        if (!carroexiste) {
             throw new Error("O carro referenciado deve existir no sistema.");
         }
 
@@ -107,8 +107,8 @@ export class EstoqueService {
         return estoque;
     }
 
-    buscarPorCarro(id_carro: any): Estoque {
-        const idCarroNum = Number(id_carro);
+    buscarPorCarro(carro: any): Estoque {
+        const idCarroNum = Number(carro);
         const list = this.estoqueRepository.listarEstoque();
         const estoque = list.find(e => e.carro.id === idCarroNum);
         if (!estoque) {
