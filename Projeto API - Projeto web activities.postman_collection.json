@@ -689,7 +689,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id_carro\": 1,\n  \"quantidade\": 5,\n  \"localizacao_patio\": \"Galpão A-3\",\n  \"data_entrada\": \"2025-06-01\"\n}"
+              "raw": "{\n  \"carro\": 1,\n  \"quantidade\": 5,\n  \"localizacao_patio\": \"Galpão A-3\",\n  \"data_entrada\": \"2025-06-01\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/estoque",
@@ -717,7 +717,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id_carro\": 1,\n  \"quantidade\": 3,\n  \"localizacao_patio\": \"Galpão B-1\",\n  \"data_entrada\": \"2026-12-31\"\n}"
+              "raw": "{\n  \"carro\": 1,\n  \"quantidade\": 3,\n  \"localizacao_patio\": \"Galpão B-1\",\n  \"data_entrada\": \"2026-12-31\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/estoque",
@@ -745,7 +745,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id_carro\": 2,\n  \"quantidade\": -5,\n  \"localizacao_patio\": \"Galpão C-2\",\n  \"data_entrada\": \"2025-05-31\"\n}"
+              "raw": "{\n  \"carro\": 2,\n  \"quantidade\": -5,\n  \"localizacao_patio\": \"Galpão C-2\",\n  \"data_entrada\": \"2025-05-31\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/estoque",
@@ -773,7 +773,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id_carro\": 1,\n  \"quantidade\": 8,\n  \"localizacao_patio\": \"Galpão A-1\",\n  \"data_entrada\": \"2025-06-01\"\n}"
+              "raw": "{\n  \"carro\": 1,\n  \"quantidade\": 8,\n  \"localizacao_patio\": \"Galpão A-1\",\n  \"data_entrada\": \"2025-06-01\"\n}"
             },
             "url": {
               "raw": "http://localhost:3000/estoque/data",
@@ -866,7 +866,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"numero_nota\": \"NF-2025-0001\",\n  \"data_emissao\": \"2025-06-10\",\n  \"valor_total\": 110000.00,\n  \"id_cliente\": 1,\n  \"id_vendedor\": 2,\n  \"id_carro\": 3\n}"
+              "raw": "{\n  \"numero_nota\": \"NF-2025-0001\",\n  \"data_emissao\": \"2025-06-10\",\n  \"valor_total\": 110000.00,\n  \"cliente\": 1,\n  \"vendedor\": 2,\n  \"carro\": 3\n}"
             },
             "url": {
               "raw": "http://localhost:3000/notas",
@@ -894,7 +894,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"numero_nota\": \"NF-2025-0001\",\n  \"data_emissao\": \"2025-06-11\",\n  \"valor_total\": 95000.00,\n  \"id_cliente\": 2,\n  \"id_vendedor\": 1,\n  \"id_carro\": 2\n}"
+              "raw": "{\n  \"numero_nota\": \"NF-2025-0001\",\n  \"data_emissao\": \"2025-06-11\",\n  \"valor_total\": 95000.00,\n  \"cliente\": 2,\n  \"vendedor\": 1,\n  \"carro\": 2\n}"
             },
             "url": {
               "raw": "http://localhost:3000/notas",
@@ -922,7 +922,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"numero_nota\": \"NF-2025-0002\",\n  \"data_emissao\": \"2025-06-10\",\n  \"valor_total\": -50000.00,\n  \"id_cliente\": 1,\n  \"id_vendedor\": 2,\n  \"id_carro\": 3\n}"
+              "raw": "{\n  \"numero_nota\": \"NF-2025-0002\",\n  \"data_emissao\": \"2025-06-10\",\n  \"valor_total\": -50000.00,\n  \"cliente\": 1,\n  \"vendedor\": 2,\n  \"carro\": 3\n}"
             },
             "url": {
               "raw": "http://localhost:3000/notas",
@@ -950,7 +950,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"numero_nota\": \"NF-2025-0002\",\n  \"data_emissao\": \"2027-06-10\",\n  \"valor_total\": 110000.00,\n  \"id_cliente\": 1,\n  \"id_vendedor\": 2,\n  \"id_carro\": 3\n}"
+              "raw": "{\n  \"numero_nota\": \"NF-2025-0002\",\n  \"data_emissao\": \"2027-06-10\",\n  \"valor_total\": 110000.00,\n  \"cliente\": 1,\n  \"vendedor\": 2,\n  \"carro\": 3\n}"
             },
             "url": {
               "raw": "http://localhost:3000/notas",
@@ -978,7 +978,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"numero_nota\": \"NF-2025-0003\",\n  \"data_emissao\": \"2025-06-10\",\n  \"valor_total\": 85000.00,\n  \"id_cliente\": 2,\n  \"id_vendedor\": 1,\n  \"id_carro\": 4\n}"
+              "raw": "{\n  \"numero_nota\": \"NF-2025-0003\",\n  \"data_emissao\": \"2025-06-10\",\n  \"valor_total\": 85000.00,\n  \"cliente\": 2,\n  \"vendedor\": 1,\n  \"carro\": 4\n}"
             },
             "url": {
               "raw": "http://localhost:3000/notas",
@@ -1006,7 +1006,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"numero_nota\": \"NF-2025-0004\",\n  \"data_emissao\": \"2025-06-10\",\n  \"valor_total\": 110000.00,\n  \"id_cliente\": 999,\n  \"id_vendedor\": 999,\n  \"id_carro\": 999\n}"
+              "raw": "{\n  \"numero_nota\": \"NF-2025-0004\",\n  \"data_emissao\": \"2025-06-10\",\n  \"valor_total\": 110000.00,\n  \"cliente\": 999,\n  \"vendedor\": 999,\n  \"carro\": 999\n}"
             },
             "url": {
               "raw": "http://localhost:3000/notas",
