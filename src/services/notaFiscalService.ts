@@ -19,7 +19,7 @@ export class NotaFiscalService {
         //Ao emitir, a quantidade em estoque é automaticamente decrementada em 1 unidade.
 
         const listEstoque = this.estoqueRepository.listarEstoque(); //Faz a listagem do estoque
-        const estoqueCarro = listEstoque.find(e => e.carro === carro); //Acha o estoque do carro associado
+        const estoqueCarro = listEstoque.find(e => e.carro.id === carro); //Acha o estoque do carro associado
 
         if (estoqueCarro && estoqueCarro.quantidade <= 0) { //Verifica se o estoque tem o carro e se tem quantidade
             throw new Error("Precisa ter um carro no estoque");
@@ -44,10 +44,10 @@ export class NotaFiscalService {
         //existentes no sistema.
 
         const listCliente = this.clienteRepository.listarClientes();
-        const clienteNotaFiscal = listCliente.find(c => c === cliente);
+        const clienteNotaFiscal = listCliente.find(c => c.id === cliente);
 
         const listVendedor = this.vendedorRepository.listarVendedor();
-        const vendedorNotaFiscal = listVendedor.find(v => v === vendedor);
+        const vendedorNotaFiscal = listVendedor.find(v => v.id === vendedor);
 
         //reutilizando a pesquisa de carro da regra 1 para definir a booleana estoqueCarro
         if (!clienteNotaFiscal || !vendedorNotaFiscal || !estoqueCarro || !carro || !vendedor || !cliente) {

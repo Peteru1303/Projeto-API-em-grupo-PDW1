@@ -44,8 +44,11 @@ export class CarroService {
         const listNotaFiscal = this.notaFiscalRepository.listarNotasFiscais();  
 
         const carrosDisponiveis = listCarros.filter(carro => {
+            //Se tiver carro no estoque acha
             const carroEstoque = listEstoque.find(estoque => estoque.carro === carro);
+            // se já possui nota fiscal
             const carroNotaFiscal = listNotaFiscal.find(notaFiscal => notaFiscal.carro === carro);
+            // o carro está no esque e nao tem nota fiscal
             return !carroEstoque && !carroNotaFiscal;
         });
 
