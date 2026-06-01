@@ -13,6 +13,8 @@ export function cadastraVendedor(req: Request, res: Response): void {
             res.status(409).json({ Message: e.message })
         } else if (e.message === "Matricula não inserida. Ela é obrigatório.") {
             res.status(400).json({ Message: e.message }) //corrigo 'if' para 'else if' para evitar que o mesmo erro seja tratado em dois blocos diferentes
+        } else if (e.message === "A comissao percentual deve ser entre 0 e 30.") { //CORRIGIDO para tratar o erro específico de comissão percentual inválida, para que o controller possa retornar uma resposta adequada para o cliente. Antes estava tratando esse erro como um erro genérico, o que dificultava a identificação do problema e a resposta adequada para o cliente.
+            res.status(400).json({ Message: e.message })
         } else {
             res.status(400).json({ Message: "Erro desconhecido" })
         }
@@ -89,6 +91,8 @@ export function listaTodasNotasFiscaisVendedor(req: Request, res: Response): voi
         res.status(200).json(notasFiscais) //CORRIGIDO retorno do json
     } catch (e: any) {
         if (e.message === "Vendedor nao encontrado") {
+            res.status(404).json({ Message: e.message })
+        } else if (e.message === "Vendedor não tem notas fiscais.") {
             res.status(404).json({ Message: e.message })
         } else {
             res.status(400).json({ Message: "Erro interno da aplicacao" })
