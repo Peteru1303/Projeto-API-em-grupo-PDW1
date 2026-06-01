@@ -85,12 +85,6 @@ export class EstoqueService {
             throw new Error("Esse campo não pode ter uma data futura em relação à data atual do servidor.");
         }
 
-        const listEstoque = this.estoqueRepository.listarEstoque();
-        const estoqueAtivo = listEstoque.find(e => e.carro === carro);
-        if (estoqueAtivo) {
-            throw new Error("Não pode existir mais de um registro de estoque ativo para o mesmo id_carro.");
-        }
-
         estoque.carro = carro;
         estoque.quantidade = quantidade;
         estoque.localizacao_patio = localizacao_patio;

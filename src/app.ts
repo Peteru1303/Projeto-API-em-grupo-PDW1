@@ -50,7 +50,7 @@ function logInfo() {
 // cliente
 app.get('/clientes', listarCliente);
 app.get('/clientes/:id', buscaClientePorID);
-app.post('/clientes', cadastraCiente);
+app.post('/clientes', cadastraCiente);  
 app.put('/clientes/:id', atualizarCliente);
 app.delete('/clientes/:id', removerCliente);
 app.get('/clientes/notas/:id', listarTodasNotasFiscaisCliente);

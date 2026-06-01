@@ -79,7 +79,7 @@ export function atualizarEstoque(req: Request, res: Response): void {
             res.status(404).json({ 
                 Message: e.message 
             })
-        } if (e.message === "Deve haver carro vinculado ao registro do estoque" || e.message === "Não pode existir mais de um registro de estoque ativo para o mesmo id_carro.") {
+        } if (e.message === "Deve haver carro vinculado ao registro do estoque") {
             res.status(409).json({ 
                 Message: e.message 
             })
