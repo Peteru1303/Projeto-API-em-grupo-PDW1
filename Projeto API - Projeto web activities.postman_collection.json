@@ -435,16 +435,11 @@
             "url": {
               "raw": "http://localhost:3000/carros",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "carros"
-              ]
+              "path": ["carros"]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Buscar carro por ID",
@@ -452,24 +447,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/carros?id=1780245910822",
+              "raw": "http://localhost:3000/carros/1",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "carros"
-              ],
-              "query": [
-                {
-                  "key": "id",
-                  "value": "1780245910822"
-                }
-              ]
+              "path": ["carros", "1"]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Listar carros com estoque disponível",
@@ -479,17 +463,11 @@
             "url": {
               "raw": "http://localhost:3000/carros/disponiveis",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "carros",
-                "disponiveis"
-              ]
+              "path": ["carros", "disponiveis"]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Cadastrar novo carro",
@@ -508,16 +486,80 @@
             "url": {
               "raw": "http://localhost:3000/carros",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "carros"
-              ]
+              "path": ["carros"]
             }
-          },
-          "response": []
+          }
+        },
+        {
+          "name": "Cadastrar carro - Placa duplicada (erro 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marca\": \"Honda\",\n  \"modelo\": \"Civic\",\n  \"ano\": 2023,\n  \"placa\": \"ABC-1234\",\n  \"preco\": 105000.00,\n  \"cor\": \"Preto\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/carros",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["carros"]
+            }
+          }
+        },
+        {
+          "name": "Cadastrar carro - Ano inválido (erro 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marca\": \"Ford\",\n  \"modelo\": \"Focus\",\n  \"ano\": 1949,\n  \"placa\": \"XYZ-5678\",\n  \"preco\": 95000.00,\n  \"cor\": \"Azul\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/carros",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["carros"]
+            }
+          }
+        },
+        {
+          "name": "Cadastrar carro - Preço inválido (erro 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marca\": \"Chevrolet\",\n  \"modelo\": \"Onix\",\n  \"ano\": 2023,\n  \"placa\": \"DEF-9999\",\n  \"preco\": -50000.00,\n  \"cor\": \"Branco\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/carros",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["carros"]
+            }
+          }
         },
         {
           "name": "Atualizar carro",
@@ -534,19 +576,13 @@
               "raw": "{\n  \"marca\": \"Toyota\",\n  \"modelo\": \"Corolla SE\",\n  \"ano\": 2024,\n  \"placa\": \"ABC-1234\",\n  \"preco\": 115000.00,\n  \"cor\": \"Prata Metálica\"\n}"
             },
             "url": {
-              "raw": "http://localhost:3000/carros/data",
+              "raw": "http://localhost:3000/carros/1",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "carros",
-                "1"
-              ]
+              "path": ["carros", "1"]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Remover carro",
@@ -554,19 +590,13 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/carros/data",
+              "raw": "http://localhost:3000/carros/1",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "carros",
-                "1"
-              ]
+              "path": ["carros", "1"]
             }
-          },
-          "response": []
+          }
         },
         {
           "name": "Remover carro - Com estoque (erro 422)",
@@ -574,19 +604,13 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:3000/carros/data",
+              "raw": "http://localhost:3000/carros/1",
               "protocol": "http",
-              "host": [
-                "localhost"
-              ],
+              "host": ["localhost"],
               "port": "3000",
-              "path": [
-                "carros",
-                "1"
-              ]
+              "path": ["carros", "1"]
             }
-          },
-          "response": []
+          }
         }
       ]
     },

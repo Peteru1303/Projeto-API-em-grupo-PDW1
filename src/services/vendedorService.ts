@@ -19,9 +19,9 @@ export class VendedorService {
         }
 
         let lista = this.vendedorRepository.listarVendedor();
-        let existeMatricula = lista.find(v => v.nome.toLowerCase() === nome.toLowerCase());
+        let existeMatricula = lista.find(v => v.matricula === matricula); //CORRIGIDO para verificar se já existe um vendedor com a mesma matrícula, pois a matrícula deve ser única para cada vendedor. Antes estava verificando se já existia um vendedor com o mesmo nome, mas o nome pode ser repetido, o que não é um problema. O que não pode ser repetido é a matrícula, pois ela é o identificador único do vendedor.
         if (existeMatricula) {
-            throw new Error("Ja existe uma matricula com este nome")
+            throw new Error("Já existe esse numero de matricula") //CORRIGIDO para lançar um erro específico quando já existe um vendedor com a mesma matrícula, para que o controller possa tratar esse erro e retornar uma resposta adequada para o cliente. Antes estava lançando um erro genérico, o que dificultava a identificação do problema e a resposta adequada para o cliente.
         }
 
         const newVendedor = new Vendedor(vendedor.nome, vendedor.matricula, vendedor.comissao_percentual);

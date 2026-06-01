@@ -71,24 +71,19 @@ export class CarroService {
         this.carroRepository.removerCarro(id);
     }
 
-    listarCarros(ordem: any): Carro[] {
+    listarCarros(): Carro[] {
             return this.carroRepository.listarCarros();
         }
     
     atualizarCarro(carroData: any, id: number): Carro {
             const carro = this.carroRepository.buscarPorID(id);
             if (!carro) {
-                throw new Error("Carro não cadastrado!!\n");
+                throw new Error("Carro não cadastrado!!!");
             }
     
             const { marca, modelo, ano, placa, preco } = carroData;
             if (!marca || !modelo || !ano || !placa || !preco) {
                 throw new Error("Novos dados devem conter marca, modelo, ano, placa e preco");
-            }
-
-            let existe = this.carroRepository.buscarPorPlaca(placa)
-            if (existe) {
-                throw new Error("Não é permitido cadastrar dois carros com a mesma placa.")
             }
 
             this.carroRepository.atualizarCarro(carroData, id);
