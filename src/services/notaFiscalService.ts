@@ -59,7 +59,7 @@ export class NotaFiscalService {
             throw new Error("A data de emissão tem que ser a data atual ou uma data anterior à atual")
         }
 
-        const newNotaFiscal = new NotaFiscal(notaFiscal.numero_nota , notaFiscal.data_emissao, notaFiscal.valor_total, notaFiscal.valor_total, notaFiscal.cliente, notaFiscal.carro);
+        const newNotaFiscal = new NotaFiscal(numero_nota, data_emissao, valor_total, cliente, vendedor, carro); 
 
         this.notaFiscalRepository.inserirNotaFiscal(newNotaFiscal)
 
