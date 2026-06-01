@@ -22,7 +22,7 @@ export class EstoqueService {
             throw new Error("Deve haver carro vinculado ao registro do estoque");
         }
 
-        const carro = this.carroRepository.buscarPorID(estoque.id_carro.id);
+        const carro = this.carroRepository.buscarPorID(estoque.id_carro);
         if (!carro) {
             throw new Error("O carro referenciado deve existir no sistema.");
         }
@@ -83,12 +83,6 @@ export class EstoqueService {
         const hoje = new Date();
         if (dataEntrada.getTime() > hoje.getTime()) {
             throw new Error("Esse campo não pode ter uma data futura em relação à data atual do servidor.");
-        }
-
-        const listEstoque = this.estoqueRepository.listarEstoque();
-        const estoqueAtivo = listEstoque.find(e => e.carro === carro);
-        if (estoqueAtivo) {
-            throw new Error("Não pode existir mais de um registro de estoque ativo para o mesmo id_carro.");
         }
 
         estoque.carro = carro;

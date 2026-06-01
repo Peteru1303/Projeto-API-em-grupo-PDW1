@@ -63,13 +63,6 @@ export class VendedorService {
         if (comissao_percentual < 0 || comissao_percentual > 30) {
             throw new Error("A comissao percentual deve ser entre 0 e 30.")
         }
-
-        let lista = this.vendedorRepository.listarVendedor();
-        let existeMatricula = lista.find(v => v.nome.toLowerCase() === nome.toLowerCase());
-        if (existeMatricula) {
-            throw new Error("Ja existe uma matricula com este nome")
-        }
-
         this.vendedorRepository.atualizarVendedor(vendedorData, id);
         return vendedor;
     }
