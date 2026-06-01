@@ -71,6 +71,9 @@ export class NotaFiscalService {
     //lista todos os clientes cadastrados
     listarNotasFiscais(): NotaFiscal[] {
         let lista = this.notaFiscalRepository.listarNotasFiscais();
+        if (!lista) {
+            throw new Error("Lista de cliente não encontrada!!\n");
+        }
         return lista;
     }
     

@@ -15,7 +15,7 @@ export function listarCarro(req: Request, res: Response): void {
 
 export function buscaCarroPorID(req: Request, res: Response): void {
     try {
-        let idBusca = req.params.id
+        let idBusca = Number(req.params.id)
         const carro = carroService.buscarPorID(idBusca) 
         res.status(200).json(carro)
     } catch (e: any) {

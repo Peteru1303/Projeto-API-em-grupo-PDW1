@@ -6,19 +6,19 @@ const notaFiscalService = new NotaFiscalService();
 export function listarNotasFiscal(req: Request, res: Response): void {
     try {
         const notasFiscal = notaFiscalService.listarNotasFiscais()
-        res.status(200).json(notasFiscal)
+        res.status(201).json(notasFiscal)
     } catch (e: any) {
-        res.status(500).json({ Message: "Erro 500 ao listar" })
+        res.status(404).json({ Message: e.message})
     }
 }
 
 export function buscaNotaFiscaPorID(req: Request, res: Response): void {
     try {
-        let id = req.params.id
+        let id = Number(req.params.id)
         const produtos = notaFiscalService.buscarPorID(id);
-        res.status(200).json(produtos)
+        res.status(201).json(produtos)
     } catch (e: any) {
-        res.status(500).json({ Message: "Erro 500 na busca por id" })
+        res.status(404).json({ Message: e.message })
     }
 }
 
@@ -28,10 +28,22 @@ export function emiteNotaFiscal(req: Request, res: Response): void {
         const produto = notaFiscalService.cadastrarNotaFiscal(data)
         res.status(201).json(produto)
     } catch (e: any) {
-        if (e.message === "Erro 400, produto nao encontrado") {
+        if (e.message === "Os campos cliente, vendedor e carro são obrigatórios e devem ter registro no sistema" || // validação de capos preenchidos
+            e.message === "O valor total deve ser maior que zero" || 
+            e.message === "A data de emissão tem que ser a data atual ou uma data anterior à atual") {
+            res.status(400).json({ Message: e.message })
+        } 
+
+        if (e.message === "Precisa ter um carro no estoque") {
             res.status(404).json({ Message: e.message })
-        } else {
-            res.status(500).json({ Message: "Erro 500 na aplicacao" })
+        } 
+
+        if (e.message === "O numero da nota fiscal já existe") {
+            res.status(409).json({ Message: e.message })
+        } 
+        
+        if (e.message === "Os campos cliente, vendedor e carro são obrigatórios e devem ter registro no sistema") {
+            res.status(422).json({ Message: e.message })
         }
     }
 }

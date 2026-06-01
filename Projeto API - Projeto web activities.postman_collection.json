@@ -1,0 +1,1004 @@
+{
+  "info": {
+    "_postman_id": "a7609aff-f567-4ea3-9b09-7c5483c6a9cc",
+    "name": "Projeto API - Projeto web activities",
+    "description": "API REST para gestão de concessionária de veículos com arquitetura MVC",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "27915622",
+    "_collection_link": "https://go.postman.co/collection/27915622-a7609aff-f567-4ea3-9b09-7c5483c6a9cc?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Clientes",
+      "item": [
+        {
+          "name": "Listar todos os clientes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/clientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar cliente por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/clientes/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "clientes",
+                "data"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cadastrar novo cliente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João da Silva\",\n  \"cpf\": \"123.456.789-00\",\n  \"telefone\": \"(11) 99999-0000\",\n  \"email\": \"joao@email.com\",\n  \"cidade\": \"São Paulo\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/clientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cadastrar cliente - CPF duplicado (erro 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Maria Silva\",\n  \"cpf\": \"123.456.789-00\",\n  \"telefone\": \"(11) 98888-0000\",\n  \"email\": \"maria@email.com\",\n  \"cidade\": \"Rio de Janeiro\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/clientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cadastrar cliente - Campos obrigatórios (erro 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Pedro Santos\",\n  \"email\": \"pedro@email.com\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/clientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar cliente",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João da Silva\",\n  \"cpf\": \"123.456.789-00\",\n  \"telefone\": \"(11) 99999-0001\",\n  \"email\": \"joao.novo@email.com\",\n  \"cidade\": \"Campinas\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/clientes/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "clientes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remover cliente",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/clientes/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "clientes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remover cliente - Com notas vinculadas (erro 422)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/clientes/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "clientes",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar notas fiscais do cliente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/clientes/notas/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "clientes",
+                "notas",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Vendedores",
+      "item": [
+        {
+          "name": "Listar todos os vendedores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/vendedores",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "vendedores"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar vendedor por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/vendedores/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "vendedores",
+                "data"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cadastrar novo vendedor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Ana Souza\",\n  \"matricula\": \"VND-001\",\n  \"comissao_percentual\": 5.5\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/vendedores",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "vendedores"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cadastrar vendedor - Comissão inválida (erro 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Carlos Santos\",\n  \"matricula\": \"VND-002\",\n  \"comissao_percentual\": 35\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/vendedores",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "vendedores"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cadastrar vendedor - Matrícula duplicada (erro 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Beatriz Costa\",\n  \"matricula\": \"VND-001\",\n  \"comissao_percentual\": 8.0\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/vendedores",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "vendedores"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar vendedor",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Ana Souza Atualizada\",\n  \"matricula\": \"VND-001\",\n  \"comissao_percentual\": 7.0\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/vendedores/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "vendedores",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remover vendedor",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/vendedores/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "vendedores",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar notas fiscais do vendedor",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/vendedores/notas/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "vendedores",
+                "notas",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Carros",
+      "item": [
+        {
+          "name": "Listar todos os carros",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/carros",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "carros"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar carro por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/carros?id=1780245910822",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "carros"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "1780245910822"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar carros com estoque disponível",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/carros/disponiveis",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "carros",
+                "disponiveis"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cadastrar novo carro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marca\": \"Toyota\",\n  \"modelo\": \"Corolla\",\n  \"ano\": 2024,\n  \"placa\": \"ABC-1234\",\n  \"preco\": 110000.00,\n  \"cor\": \"Prata\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/carros",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "carros"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar carro",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marca\": \"Toyota\",\n  \"modelo\": \"Corolla SE\",\n  \"ano\": 2024,\n  \"placa\": \"ABC-1234\",\n  \"preco\": 115000.00,\n  \"cor\": \"Prata Metálica\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/carros/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "carros",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remover carro",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/carros/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "carros",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remover carro - Com estoque (erro 422)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/carros/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "carros",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Estoque",
+      "item": [
+        {
+          "name": "Listar todos os registros de estoque",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/estoque",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "estoque"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar estoque por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/estoque/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "estoque",
+                "data"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar estoque de um carro específico",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/estoque/carro/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "estoque",
+                "carro",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Criar novo registro de estoque",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_carro\": 1,\n  \"quantidade\": 5,\n  \"localizacao_patio\": \"Galpão A-3\",\n  \"data_entrada\": \"2025-06-01\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/estoque",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "estoque"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Criar estoque - Data futura (erro 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_carro\": 1,\n  \"quantidade\": 3,\n  \"localizacao_patio\": \"Galpão B-1\",\n  \"data_entrada\": \"2026-12-31\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/estoque",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "estoque"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Criar estoque - Quantidade negativa (erro 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_carro\": 2,\n  \"quantidade\": -5,\n  \"localizacao_patio\": \"Galpão C-2\",\n  \"data_entrada\": \"2025-05-31\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/estoque",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "estoque"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar estoque",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_carro\": 1,\n  \"quantidade\": 8,\n  \"localizacao_patio\": \"Galpão A-1\",\n  \"data_entrada\": \"2025-06-01\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/estoque/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "estoque",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remover registro de estoque",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/estoque/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "estoque",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notas Fiscais",
+      "item": [
+        {
+          "name": "Listar todas as notas fiscais",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/notas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "notas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar nota fiscal por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/notas/data",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "notas",
+                "data"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Emitir nova nota fiscal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_nota\": \"NF-2025-0001\",\n  \"data_emissao\": \"2025-06-10\",\n  \"valor_total\": 110000.00,\n  \"id_cliente\": 1,\n  \"id_vendedor\": 2,\n  \"id_carro\": 3\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/notas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "notas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Emitir nota - Número duplicado (erro 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_nota\": \"NF-2025-0001\",\n  \"data_emissao\": \"2025-06-11\",\n  \"valor_total\": 95000.00,\n  \"id_cliente\": 2,\n  \"id_vendedor\": 1,\n  \"id_carro\": 2\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/notas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "notas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Emitir nota - Valor total inválido (erro 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_nota\": \"NF-2025-0002\",\n  \"data_emissao\": \"2025-06-10\",\n  \"valor_total\": -50000.00,\n  \"id_cliente\": 1,\n  \"id_vendedor\": 2,\n  \"id_carro\": 3\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/notas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "notas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Emitir nota - Data futura (erro 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_nota\": \"NF-2025-0002\",\n  \"data_emissao\": \"2027-06-10\",\n  \"valor_total\": 110000.00,\n  \"id_cliente\": 1,\n  \"id_vendedor\": 2,\n  \"id_carro\": 3\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/notas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "notas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Emitir nota - Sem estoque (erro 422)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_nota\": \"NF-2025-0003\",\n  \"data_emissao\": \"2025-06-10\",\n  \"valor_total\": 85000.00,\n  \"id_cliente\": 2,\n  \"id_vendedor\": 1,\n  \"id_carro\": 4\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/notas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "notas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Emitir nota - Cliente/Vendedor/Carro inexistentes (erro 404)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero_nota\": \"NF-2025-0004\",\n  \"data_emissao\": \"2025-06-10\",\n  \"valor_total\": 110000.00,\n  \"id_cliente\": 999,\n  \"id_vendedor\": 999,\n  \"id_carro\": 999\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/notas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "notas"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

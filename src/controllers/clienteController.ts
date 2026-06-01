@@ -36,7 +36,7 @@ export function listarCliente(req: Request, res: Response): void {
 
 export function buscaClientePorID(req: Request, res: Response): void {
     try {
-        let idBusca = req.params.id
+        let idBusca = Number(req.params.id)
         const cliente = clienteService.buscarPorID(idBusca)
         res.status(200).json(cliente)
     } catch (e: any) {

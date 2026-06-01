@@ -40,7 +40,7 @@ export function listarEstoque(req: Request, res: Response): void {
 
 export function buscaEstoquePorID(req: Request, res: Response): void {
     try {
-        let idBusca = req.params.id
+        let idBusca = Number(req.params.id)
         const estoque = estoqueService.buscarPorID(idBusca)
         res.status(200).json(estoque)
     } catch (e: any) {
