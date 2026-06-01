@@ -83,6 +83,9 @@ export class VendedorService {
 
     listaTodasNotasFiscaisVendedor(id: number): NotaFiscal {
         const vendedor = this.vendedorRepository.buscarPorID(id);
+        if (!vendedor) {
+            throw new Error("Vendedor nao encontrado");
+        }
         const listNotasFiscais = this.notaFiscalRepository.listarNotasFiscais();
         const vendedorTemNotaFiscal = listNotasFiscais.find(n => n.vendedor === vendedor);
         if (!vendedorTemNotaFiscal){
