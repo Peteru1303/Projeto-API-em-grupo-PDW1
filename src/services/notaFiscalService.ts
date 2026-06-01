@@ -36,7 +36,7 @@ export class NotaFiscalService {
         }
 
         //Regra 3: O campo valor_total deve ser positivo e maior que zero.
-        if (valor_total > 0) {
+        if (valor_total < 0) {
             throw new Error("O valor total deve ser maior que zero");
         }
 
