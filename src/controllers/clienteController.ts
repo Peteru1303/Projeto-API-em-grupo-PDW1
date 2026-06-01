@@ -59,8 +59,6 @@ export function atualizarCliente(req: Request, res: Response): void {
     } catch (e: any) {
         if (e.message === "Cliente nao encontrado") {
             res.status(404).json({ Message: e.message })
-        } if (e.message === "O CPF digitado já se encontra no banco de dados") {
-            res.status(409).json({ Message: e.message })
         } if (e.message === "Novos dados devem conter nome, cpf e telefone") {
             res.status(400).json({ Message: e.message })
         } else {

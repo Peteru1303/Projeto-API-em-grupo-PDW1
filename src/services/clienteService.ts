@@ -66,11 +66,6 @@ export class ClienteService {
         if (!nome || !cpf || !telefone) {
             throw new Error("Novos dados devem conter nome, cpf e telefone");
         }
-        
-        let buscarCliente = this.clienteRepository.buscarPorCPF(cpf);
-        if (buscarCliente) {
-            throw new Error("O CPF digitado já se encontra no banco de dados");
-        }
 
         this.clienteRepository.atualizarCliente(ClienteData, idUpdt);
         return cliente;
