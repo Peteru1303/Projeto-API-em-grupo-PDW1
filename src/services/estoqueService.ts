@@ -42,7 +42,7 @@ export class EstoqueService {
         }
 
         const listEstoque = this.estoqueRepository.listarEstoque();
-        const estoqueAtivo = listEstoque.find(e => e.carro.id === carro.id);
+        const estoqueAtivo = listEstoque.find(e => e.carro === carro);
         if (estoqueAtivo) {
             throw new Error("Não pode existir mais de um registro de estoque ativo para o mesmo carro.");
         }
@@ -110,7 +110,7 @@ export class EstoqueService {
     buscarPorCarro(carro: any): Estoque {
         const idCarroNum = Number(carro);
         const list = this.estoqueRepository.listarEstoque();
-        const estoque = list.find(e => e.carro.id === idCarroNum);
+        const estoque = list.find(e => e.carro === idCarroNum);
         if (!estoque) {
             throw new Error("Estoque do carro nao encontrado");
         }

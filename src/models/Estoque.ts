@@ -2,13 +2,13 @@ import { Carro } from "./Carro"
 
 export class Estoque {
     id: number
-    carro: Carro
+    carro: number
     quantidade: number
     localizacao_patio: string
     data_entrada: Date
 
     constructor(
-        carro: Carro,
+        carro: number,
         quantidade: number,
         localizacao_patio: string,
         data_entrada: Date

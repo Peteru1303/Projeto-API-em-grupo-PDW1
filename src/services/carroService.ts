@@ -45,7 +45,7 @@ export class CarroService {
 
         const carrosDisponiveis = listCarros.filter(carro => {
             //Se tiver carro no estoque acha
-            const carroEstoque = listEstoque.find(estoque => estoque.carro === carro);
+            const carroEstoque = listEstoque.find(estoque => estoque.carro === carro.id);
             // se já possui nota fiscal
             const carroNotaFiscal = listNotaFiscal.find(notaFiscal => notaFiscal.carro === carro);
             // o carro está no esque e nao tem nota fiscal
@@ -58,7 +58,7 @@ export class CarroService {
     removerCarro(id: number): void {
         const listEstoque = this.estoqueRepository.listarEstoque();
         const carro = this.carroRepository.buscarPorID(id);
-        const carroEstoque = listEstoque.find(estoque => estoque.carro === carro);
+        const carroEstoque = listEstoque.find(estoque => estoque.carro === id);
 
         const listNotaFiscal = this.notaFiscalRepository.listarNotasFiscais();
         const carroNotaFiscal = listNotaFiscal.find(notaFiscal => notaFiscal.carro === carro);
