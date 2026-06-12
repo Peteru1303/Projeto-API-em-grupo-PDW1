@@ -81,16 +81,17 @@ export class VendedorService {
         this.vendedorRepository.removerVendedor(idRem);
     }
 
-    listaTodasNotasFiscaisVendedor(idNFC: number): NotaFiscal {
-        const vendedor = this.vendedorRepository.buscarPorID(idNFC);
+    listaTodasNotasFiscaisVendedor(idNFV: number): NotaFiscal[] {
+
+        const vendedor = this.vendedorRepository.buscarPorID(idNFV);
         if (!vendedor) {
             throw new Error("Vendedor nao encontrado");
         }
         const listNotasFiscais = this.notaFiscalRepository.listarNotasFiscais();
-        const vendedorTemNotaFiscal = listNotasFiscais.find(n => n.vendedor === idNFC);
+        const vendedorTemNotaFiscal = listNotasFiscais.filter(n => n.vendedor === idNFV);
         if (!vendedorTemNotaFiscal){
             throw new Error("Vendedor não tem notas fiscais.");
         }
-        return vendedorTemNotaFiscal;
+        return vendedorTemNotaFiscal
     }
 }

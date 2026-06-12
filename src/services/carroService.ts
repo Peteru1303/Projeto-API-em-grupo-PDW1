@@ -41,18 +41,15 @@ export class CarroService {
     listarCarrosDisponíveis(): Carro[] {
         const listCarros = this.carroRepository.listarCarros();
         const listEstoque = this.estoqueRepository.listarEstoque();
-        const listNotaFiscal = this.notaFiscalRepository.listarNotasFiscais();  
+        const estoqueComQuantidade = listEstoque.filter(e => e.quantidade > 0)
+        let carros: Carro[] = []
+        for (let i = 0; i < estoqueComQuantidade.length; i++) {
+            const carroDisponivel = listCarros.find(d => d.id === estoqueComQuantidade[i].id)
+            if (carroDisponivel)
+                carros.push(carroDisponivel)
+        }
 
-        const carrosDisponiveis = listCarros.filter(carro => {
-            //Se tiver carro no estoque acha
-            const carroEstoque = listEstoque.find(estoque => estoque.carro === carro.id);
-            // se já possui nota fiscal
-            const carroNotaFiscal = listNotaFiscal.find(notaFiscal => notaFiscal.carro === carro.id);
-            // o carro está no esque e nao tem nota fiscal
-            return !carroEstoque && !carroNotaFiscal;
-        });
-
-        return carrosDisponiveis;
+        return carros;
     }
 
     removerCarro(idRem: number): void {
@@ -79,31 +76,31 @@ export class CarroService {
     }
 
     listarCarros(): Carro[] {
-            return this.carroRepository.listarCarros();
-        }
-    
-    atualizarCarro(carroData: any, id: number): Carro {
-            const carro = this.carroRepository.buscarPorID(id);
-            if (!carro) {
-                throw new Error("Carro não cadastrado!!!");
-            }
-    
-            const { marca, modelo, ano, placa, preco } = carroData;
-            if (!marca || !modelo || !ano || !placa || !preco) {
-                throw new Error("Novos dados devem conter marca, modelo, ano, placa e preco");
-            }
+        return this.carroRepository.listarCarros();
+    }
 
-            this.carroRepository.atualizarCarro(carroData, id);
-            return carro;
+    atualizarCarro(carroData: any, id: number): Carro {
+        const carro = this.carroRepository.buscarPorID(id);
+        if (!carro) {
+            throw new Error("Carro não cadastrado!!!");
         }
+
+        const { marca, modelo, ano, placa, preco } = carroData;
+        if (!marca || !modelo || !ano || !placa || !preco) {
+            throw new Error("Novos dados devem conter marca, modelo, ano, placa e preco");
+        }
+
+        this.carroRepository.atualizarCarro(carroData, id);
+        return carro;
+    }
 
     buscarPorID(id: any): Carro {
-            let lista = this.carroRepository.listarCarros();
-            let carro = lista.find(p => p.id === id);
-    
-            if (!carro) {
-                throw new Error("Carro não encontrado!!\n");
-            }
-            return carro;
+        let lista = this.carroRepository.listarCarros();
+        let carro = lista.find(p => p.id === id);
+
+        if (!carro) {
+            throw new Error("Carro não encontrado!!\n");
+        }
+        return carro;
     }
 }

@@ -86,17 +86,18 @@ export class ClienteService {
         this.clienteRepository.removerCliente(idRem);
     }
 
-     listarTodasNotasFiscaisCliente(idNFC: number): NotaFiscal {
+     listarTodasNotasFiscaisCliente(idNFC: number): NotaFiscal[] {
 
         const cliente = this.clienteRepository.buscarPorID(idNFC);
         if (!cliente) {
             throw new Error("Cliente nao encontrado");
         }
         const listNotasFiscais = this.notaFiscalRepository.listarNotasFiscais();
-        const clienteTemNotaFiscal = listNotasFiscais.find(n => n.cliente === idNFC);
-        if (!clienteTemNotaFiscal){
+        const NotasFiscaisCliente = listNotasFiscais.filter(n => n.cliente === idNFC)
+        if (!NotasFiscaisCliente){
             throw new Error("Cliente não tem notas fiscais.");
         }
-        return clienteTemNotaFiscal
+        else
+        return NotasFiscaisCliente
     }
 }
