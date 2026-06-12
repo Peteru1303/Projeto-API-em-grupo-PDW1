@@ -7,17 +7,17 @@ export class NotaFiscal {
     numero_nota: string
     data_emissao: Date
     valor_total: number
-    cliente: Cliente
-    vendedor: Vendedor
-    carro: Carro
+    cliente: number
+    vendedor: number
+    carro: number
 
     constructor(
         numero_nota: string,
         data_emissao: Date,
         valor_total: number,
-        cliente: Cliente,
-        vendedor: Vendedor,
-        carro: Carro
+        cliente: number,
+        vendedor: number,
+        carro: number
     ) {
         this.id = this.gerarId();
         this.numero_nota = numero_nota;

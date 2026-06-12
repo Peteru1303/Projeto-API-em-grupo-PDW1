@@ -67,27 +67,27 @@ export class VendedorService {
         return vendedor;
     }
 
-    removerVendedor(id: number): void {
-        const vendedor = this.vendedorRepository.buscarPorID(id);
+    removerVendedor(idRem: number): void {
+        const vendedor = this.vendedorRepository.buscarPorID(idRem);
         if (!vendedor) {
             throw new Error("Vendedor nao encontrado");
         }
         //Adicionar condicional que não permite remover um vendedor que possua notas fiscais vinculadas a ele.
         const listNotasFiscais = this.notaFiscalRepository.listarNotasFiscais();
-        const vendedorTemNotaFiscal = listNotasFiscais.find(n => n.vendedor === vendedor);
+        const vendedorTemNotaFiscal = listNotasFiscais.find(n => n.vendedor === idRem);
         if (vendedorTemNotaFiscal) {
             throw new Error("Não pode deletar vendedor com nota fiscal vinculada");
         }
-        this.vendedorRepository.removerVendedor(id);
+        this.vendedorRepository.removerVendedor(idRem);
     }
 
-    listaTodasNotasFiscaisVendedor(id: number): NotaFiscal {
-        const vendedor = this.vendedorRepository.buscarPorID(id);
+    listaTodasNotasFiscaisVendedor(idNFC: number): NotaFiscal {
+        const vendedor = this.vendedorRepository.buscarPorID(idNFC);
         if (!vendedor) {
             throw new Error("Vendedor nao encontrado");
         }
         const listNotasFiscais = this.notaFiscalRepository.listarNotasFiscais();
-        const vendedorTemNotaFiscal = listNotasFiscais.find(n => n.vendedor === vendedor);
+        const vendedorTemNotaFiscal = listNotasFiscais.find(n => n.vendedor === idNFC);
         if (!vendedorTemNotaFiscal){
             throw new Error("Vendedor não tem notas fiscais.");
         }

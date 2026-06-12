@@ -47,7 +47,7 @@ export class CarroService {
             //Se tiver carro no estoque acha
             const carroEstoque = listEstoque.find(estoque => estoque.carro === carro.id);
             // se já possui nota fiscal
-            const carroNotaFiscal = listNotaFiscal.find(notaFiscal => notaFiscal.carro === carro);
+            const carroNotaFiscal = listNotaFiscal.find(notaFiscal => notaFiscal.carro === carro.id);
             // o carro está no esque e nao tem nota fiscal
             return !carroEstoque && !carroNotaFiscal;
         });
@@ -55,13 +55,17 @@ export class CarroService {
         return carrosDisponiveis;
     }
 
-    removerCarro(id: number): void {
+    removerCarro(idRem: number): void {
         const listEstoque = this.estoqueRepository.listarEstoque();
-        const carro = this.carroRepository.buscarPorID(id);
-        const carroEstoque = listEstoque.find(estoque => estoque.carro === id);
+        const carro = this.carroRepository.buscarPorID(idRem);
+        const carroEstoque = listEstoque.find(estoque => estoque.carro === idRem);
 
         const listNotaFiscal = this.notaFiscalRepository.listarNotasFiscais();
-        const carroNotaFiscal = listNotaFiscal.find(notaFiscal => notaFiscal.carro === carro);
+        const carroNotaFiscal = listNotaFiscal.find(notaFiscal => notaFiscal.carro === idRem);
+
+        if (!carro) {
+            throw new Error("Carro não encontrado");
+        }
 
         if (carroEstoque) {
             throw new Error("Não é permitido remover um carro que possua registros em estoque.");
@@ -71,7 +75,7 @@ export class CarroService {
             throw new Error("Não é permitido remover um carro que possua notas fiscais vinculadas.");
         }
 
-        this.carroRepository.removerCarro(id);
+        this.carroRepository.removerCarro(idRem);
     }
 
     listarCarros(): Carro[] {

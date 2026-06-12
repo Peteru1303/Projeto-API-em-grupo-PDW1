@@ -79,7 +79,7 @@ export class ClienteService {
             throw new Error("Cliente nao encontrado");
         }
         const listNotasFiscais = this.notaFiscalRepository.listarNotasFiscais();
-        const clienteTemNotaFiscal = listNotasFiscais.find(n => n.cliente === cliente);
+        const clienteTemNotaFiscal = listNotasFiscais.find(n => n.cliente === idRem);
         if (clienteTemNotaFiscal){
             throw new Error("Não pode deletar Cliente com Nota Fiscal Vinculada");
         }
@@ -93,7 +93,7 @@ export class ClienteService {
             throw new Error("Cliente nao encontrado");
         }
         const listNotasFiscais = this.notaFiscalRepository.listarNotasFiscais();
-        const clienteTemNotaFiscal = listNotasFiscais.find(n => n.cliente === cliente);
+        const clienteTemNotaFiscal = listNotasFiscais.find(n => n.cliente === idNFC);
         if (!clienteTemNotaFiscal){
             throw new Error("Cliente não tem notas fiscais.");
         }
