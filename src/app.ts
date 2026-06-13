@@ -1,12 +1,7 @@
 
-import {
-    listarCliente,
-    buscaClientePorID,
-    cadastraCiente,
-    atualizarCliente,
-    removerCliente,
-    listarTodasNotasFiscaisCliente
-} from "./controllers/clienteController";
+import express from "express"
+import router from "./routes/router";
+import { inicializarBanco } from "./database/mysql";
 import {
     listarVendedor,
     buscaVendedorPorID,
@@ -37,8 +32,6 @@ import {
     emiteNotaFiscal
 } from "./controllers/notaFiscalController";
 
-import express from "express"
-
 const app = express()
 const PORT = process.env.PORT ?? 3000
 app.use(express.json())
@@ -48,12 +41,7 @@ function logInfo() {
 }
 
 // cliente
-app.get('/clientes', listarCliente);
-app.get('/clientes/:id', buscaClientePorID);
-app.post('/clientes', cadastraCiente);  
-app.put('/clientes/:id', atualizarCliente);
-app.delete('/clientes/:id', removerCliente);
-app.get('/clientes/notas/:id', listarTodasNotasFiscaisCliente);
+app.use('/api', router);
 
 // vendedor
 app.get('/vendedores', listarVendedor);
@@ -85,4 +73,9 @@ app.get('/notas', listarNotasFiscal);
 app.get('/notas/:id', buscaNotaFiscaPorID);
 app.post('/notas', emiteNotaFiscal);
 
-app.listen(PORT, logInfo);
+async function startServer() {
+    await inicializarBanco();
+    app.listen(PORT, logInfo);
+}
+
+startServer();
