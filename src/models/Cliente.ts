@@ -1,27 +1,10 @@
 export class Cliente {
-    id: number
-    nome: string
-    cpf: string
-    telefone: string
-    email: string
-    cidade: string
-
     constructor(
-        nome: string, 
-        cpf: string, 
-        telefone: string,
-        email: string,
-        cidade: string
-    ) {
-        this.id = this.gerarId();
-        this.nome = nome;
-        this.cpf = cpf;
-        this.telefone = telefone;
-        this.email = email;
-        this.cidade = cidade;
-    }
-
-    private gerarId(): number {
-        return Date.now();
-    }
+        public id: number | null,
+        public nome: string,
+        public cpf: string,
+        public telefone: string,
+        public email: string,
+        public cidade: string
+    ) {}
 }
