@@ -13,8 +13,18 @@ export class CarroRepositorio {
         return this.instance;
     }
 
-    novoCarro(carro: Carro): void {
-        this.carroList.push(carro);
+    novoCarro(carro: Carro): String { //Matheus: Não finalizado ainda
+        return `
+        CREATE TABLE IF NOT EXISTS Cliente (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            marca VARCHAR(255) NOT NULL,
+            modelo VARCHAR(255) NOT NULL,
+            ano number(4) NOT NULL,
+            placa VARCHAR(255) NOT NULL,
+            preco VARCHAR(255),
+            cor VARCHAR(255)
+        );        
+        `
     }
 
     listarCarros(): Carro[] {
