@@ -7,6 +7,7 @@ import { NotaFiscalController } from '../controllers/notaFiscalController'
 
 const router = Router();
 const controller = new ClienteController();
+const estoquecontroller = new EstoqueController();
 
 // Clientes
 router.get('/clientes', (req: Request, res: Response) => { controller.listarCliente(req, res); });
@@ -53,17 +54,17 @@ router.delete('/estoque/:id', (req: Request, res: Response) => { controller.remo
 
 //Estoque 
 
-app.get('/estoque', (req: Request, res: Response) => { controller.listarEstoque(req, res); });
+router.get('/estoque', (req: Request, res: Response) => { estoquecontroller.listarEstoque(req, res); });
 
-app.get('/estoque/:id', (req: Request, res: Response) => { controller.buscaEstoquePorID(req, res); });
+router.get('/estoque/:id', (req: Request, res: Response) => { estoquecontroller.buscaEstoquePorID(req, res); });
 
-app.get('/estoque/carro/:id_carro', (req: Request, res: Response) => { controller.buscaEstoqueCarro(req, res); });
+router.get('/estoque/carro/:id_carro', (req: Request, res: Response) => { estoquecontroller.buscaEstoqueCarro(req, res); });
 
-app.post('/estoque', (req: Request, res: Response) => { controller.cadastraEstoque(req, res); });
+router.post('/estoque', (req: Request, res: Response) => { estoquecontroller.cadastraEstoque(req, res); });
 
-app.put('/estoque/:id', (req: Request, res: Response) => { controller.atualizarEstoque(req, res); });
+router.put('/estoque/:id', (req: Request, res: Response) => { estoquecontroller.atualizarEstoque(req, res); });
 
-app.delete('/estoque/:id', (req: Request, res: Response) => { controller.removeEstoque(req, res); });
+router.delete('/estoque/:id', (req: Request, res: Response) => { estoquecontroller.removeEstoque(req, res); });
 
 //Nota fiscal
 

@@ -22,7 +22,7 @@ export class EstoqueService {
             throw new Error("Deve haver carro vinculado ao registro do estoque");
         }
 
-        const carroexiste = this.carroRepository.buscarPorID(estoque.carro);
+        const carroexiste = await this.carroRepository.buscarPorID(estoque.carro);
         if (!carroexiste) {
             throw new Error("O carro referenciado deve existir no sistema.");
         }
@@ -41,13 +41,13 @@ export class EstoqueService {
             throw new Error("Esse campo não pode ter uma data futura em relação à data atual do servidor.");
         }
 
-        const listEstoque = this.estoqueRepository.listarEstoque();
+        const listEstoque = await this.estoqueRepository.listarEstoque();
         const estoqueAtivo = listEstoque.find(e => e.carro === carro);
         if (estoqueAtivo) {
             throw new Error("Não pode existir mais de um registro de estoque ativo para o mesmo carro.");
         }
 
-        const newEstoque = new Estoque(carro, quantidade, localizacao_patio, dataEntrada);
+        const newEstoque = new Estoque(null, carro, quantidade, localizacao_patio, dataEntrada);
 
         this.estoqueRepository.novoEstoque(newEstoque);
 
@@ -55,7 +55,7 @@ export class EstoqueService {
     }
 
     async atualizarEstoque(estoqueData: any, id: number): Promise<Estoque> {
-        const estoque = this.estoqueRepository.buscarPorID(id);
+        const estoque = await this.estoqueRepository.buscarPorID(id);
         if (!estoque) {
             throw new Error("Estoque nao encontrado");
         }
@@ -113,7 +113,7 @@ export class EstoqueService {
 
     async buscarPorCarro(carro: any): Promise<Estoque> {
         const idCarroNum = Number(carro);
-        const list = this.estoqueRepository.listarEstoque();
+        const list = await this.estoqueRepository.listarEstoque();
         const estoque = list.find(e => e.carro === idCarroNum);
         if (!estoque) {
             throw new Error("Estoque do carro nao encontrado");

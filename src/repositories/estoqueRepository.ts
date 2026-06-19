@@ -18,12 +18,12 @@ export class EstoqueRepositorio {
         return `
         CREATE TABLE IF NOT EXISTS Estoque (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            carro VARCHAR(255) NOT NULL,
-            quantidade VARCHAR(14) NOT NULL,
-            localizacao_patio VARCHAR(20) NOT NULL,
-            data_entrada VARCHAR(20) NOT NULL
+            carro INT NOT NULL,
+            quantidade INT NOT NULL,
+            localizacao_patio VARCHAR(40) NOT NULL,
+            data_entrada DATE NOT NULL
         );
-        `;//Parametros incorreto, perguntar pro professor como representar cada um
+        `;
     }
 
     async novoEstoque(estoque: Estoque): Promise<Estoque> {
