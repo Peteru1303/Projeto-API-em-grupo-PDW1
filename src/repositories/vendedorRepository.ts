@@ -60,11 +60,19 @@ export class VendedorRepositorio {
         return new Vendedor(linha.id, linha.nome, linha.cpf, linha.comissao_percentual);
     }
 
-    async atualizarVendedor(vendedorData: any, id: number): Promise<void> {
-        await executarComandoSQL(
+    async existeMatricula(matricula: string): Promise<boolean> {
+        const linhas = await executarComandoSQL("SELECT * FROM Vendedor WHERE matricula = ?", [matricula]);
+                
+        if (linhas.length === 0) return false;
+        return true;
+    }
+
+    async atualizarVendedor(vendedorData: any, id: number): Promise<Vendedor> {
+        let vendedorAtualizado = await executarComandoSQL(
             "UPDATE Vendedor SET nome = ?, matricula = ?, comissao_percentual = ? WHERE id = ?",
             [vendedorData.nome, vendedorData.matricula, vendedorData.comissao_percentual, id]
         );
+        return vendedorAtualizado;
     }
 
     async removerVendedor(id: number): Promise<void> {

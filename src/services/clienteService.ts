@@ -31,7 +31,7 @@ export class ClienteService {
     //lista todos os clientes cadastrados
     async listarClientes(): Promise<Cliente[]> {
         let lista = await this.clienteRepository.listarClientes();
-         if (!lista) {
+        if (!lista) {
             throw new Error("Cliente não encontrado!!");
         }
         return lista;
@@ -41,14 +41,16 @@ export class ClienteService {
     async buscarPorID(id: any): Promise<Cliente> {
         let idNumero = Number(id);
         let cliente: Cliente | null = null;
-        if (!isNaN(idNumero)) {
-            cliente = await this.clienteRepository.buscarPorID(idNumero);
-        }
 
-        if (!cliente) {
-            let lista = await this.clienteRepository.listarClientes();
-            cliente = lista.find(p => p.nome.toLowerCase() === String(id).toLowerCase()) || null;
-        }
+
+        cliente = await this.clienteRepository.buscarPorID(idNumero);
+
+
+        // redundacia, o buscarPorID ja percorre a lista
+        // if (!cliente) {
+        //     let lista = await this.clienteRepository.listarClientes();
+        //     cliente = lista.find(p => p.nome.toLowerCase() === String(id).toLowerCase()) || null;
+        // }
 
         if (!cliente) {
             throw new Error("Cliente não encontrado!!");
@@ -57,8 +59,8 @@ export class ClienteService {
     }
     
 
-    async atualizarCliente(ClienteData: any, idUpdt: number): Promise<Cliente> {
-        const cliente = await this.clienteRepository.buscarPorID(idUpdt);
+    async atualizarCliente(ClienteData: any, id: number): Promise<Cliente> {
+        const cliente = await this.clienteRepository.buscarPorID(id);
         if (!cliente) {
             throw new Error("Cliente não cadastrado!!");
         }
@@ -68,7 +70,7 @@ export class ClienteService {
             throw new Error("Novos dados devem conter nome, cpf e telefone");
         }
 
-        await this.clienteRepository.atualizarCliente(ClienteData, idUpdt);
+        await this.clienteRepository.atualizarCliente(ClienteData, id);
         return cliente;
     }
 

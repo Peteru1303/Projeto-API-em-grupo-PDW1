@@ -21,12 +21,32 @@ export class NotaFiscalRepositorio {
         return this.NotaFiscalList;
     }
 
+    listarNotasFiscaisVendedor(id: number): NotaFiscal[] {
+        const listNotasFiscais = this.listarNotasFiscais();
+
+        const listaVendedorNFC = listNotasFiscais.filter(n => n.vendedor === id);
+
+        return listaVendedorNFC;
+    }
+
     buscarPorID(id: number): NotaFiscal | undefined {
         return this.NotaFiscalList.find(nota => nota.id === id);
     }
 
     buscarPorNumeroNota(numero_nota: string): NotaFiscal | undefined {
         return this.NotaFiscalList.find(notaFiscal => notaFiscal.numero_nota === numero_nota);
+    }
+
+    buscarPorNumeroNotaCliente(cliente_id: number): NotaFiscal | undefined {
+        return this.NotaFiscalList.find(notaFiscal => notaFiscal.cliente === cliente_id);
+    }
+
+    buscarPorNumeroNotaVendedor(vendedor_id: number): NotaFiscal | undefined {
+        return this.NotaFiscalList.find(notaFiscal => notaFiscal.vendedor === vendedor_id);
+    }
+
+    buscarPorNumeroNotaCarro(carro_id: number): NotaFiscal | undefined {
+        return this.NotaFiscalList.find(notaFiscal => notaFiscal.carro === carro_id);
     }
 
     atualizarNotaFiscal(NotaFiscalData: any, id: number): void {
