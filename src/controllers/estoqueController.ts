@@ -3,7 +3,7 @@ import { EstoqueService } from "./../services/estoqueService"
 
 const estoqueService = new EstoqueService()
 
-export function cadastraEstoque(req: Request, res: Response): void {
+async function cadastraEstoque(req: Request, res: Response): Promise<void> {
     try {
         let data: any = req.body
         const estoque = estoqueService.cadastrarEstoque(data)
@@ -27,7 +27,7 @@ export function cadastraEstoque(req: Request, res: Response): void {
     }
 }
 
-export function listarEstoque(req: Request, res: Response): void {
+async function listarEstoque(req: Request, res: Response): Promise<void> {
     try {
         const estoque = estoqueService.listarEstoque()
         res.status(200).json(estoque)
@@ -38,7 +38,7 @@ export function listarEstoque(req: Request, res: Response): void {
     }
 }
 
-export function buscaEstoquePorID(req: Request, res: Response): void {
+async function buscaEstoquePorID(req: Request, res: Response): Promise<void> {
     try {
         let idBusca = Number(req.params.id)
         const estoque = estoqueService.buscarPorID(idBusca)
@@ -50,7 +50,7 @@ export function buscaEstoquePorID(req: Request, res: Response): void {
     }
 }
 
-export function buscaEstoqueCarro(req: Request, res: Response): void {
+async function buscaEstoqueCarro(req: Request, res: Response): Promise<void> {
     try {
         let idCarro = req.params.id_carro
         const estoque = estoqueService.buscarPorCarro(idCarro)
@@ -68,7 +68,7 @@ export function buscaEstoqueCarro(req: Request, res: Response): void {
     }
 }
 
-export function atualizarEstoque(req: Request, res: Response): void {
+async function atualizarEstoque(req: Request, res: Response): Promise<void> {
     try {
         let id = Number(req.params.id)
         let data: any = req.body
@@ -91,7 +91,7 @@ export function atualizarEstoque(req: Request, res: Response): void {
     }
 }
 
-export function removeEstoque(req: Request, res: Response): void {
+async function removeEstoque(req: Request, res: Response): Promise<void> {
     try {
         let id = Number(req.params.id)
         estoqueService.removerEstoque(id)

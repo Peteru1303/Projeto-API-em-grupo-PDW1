@@ -28,7 +28,7 @@ export class VendedorRepositorio {
 
     async novoVendedor(vendedor: Vendedor): Promise<Vendedor> {
         const resultado = await executarComandoSQL(
-            "INSERT INTO Cliente (nome, matricula, comissao_percentual) VALUES (?, ?, ?)",
+            "INSERT INTO Vendedor (nome, matricula, comissao_percentual) VALUES (?, ?, ?)",
             [vendedor.nome, vendedor.matricula, vendedor.comissao_percentual]
         )
 
@@ -76,7 +76,7 @@ export class VendedorRepositorio {
     }
 
     async removerVendedor(id: number): Promise<void> {
-        await executarComandoSQL("DELETE FROM Cliente WHERE id = ?", [id]);
+        await executarComandoSQL("DELETE FROM Vendedor WHERE id = ?", [id]);
     }
     //Adicionar função de retornar as notas fiscais de um vendedor
     //possivelmente reutilizar a função busca id e exportar a nota fiscal do vendedor?

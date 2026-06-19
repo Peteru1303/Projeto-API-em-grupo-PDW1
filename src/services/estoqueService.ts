@@ -15,7 +15,7 @@ export class EstoqueService {
     carroRepository = CarroRepositorio.getInstance();
     estoqueRepository = EstoqueRepositorio.getInstance();
 
-    cadastrarEstoque(estoque: any): Estoque {
+    async cadastrarEstoque(estoque: any): Promise<Estoque> {
         const {carro, quantidade, localizacao_patio, data_entrada } = estoque;
 
         if (!carro) {
@@ -54,7 +54,7 @@ export class EstoqueService {
         return newEstoque;
     }
 
-    atualizarEstoque(estoqueData: any, id: number): Estoque {
+    async atualizarEstoque(estoqueData: any, id: number): Promise<Estoque> {
         const estoque = this.estoqueRepository.buscarPorID(id);
         if (!estoque) {
             throw new Error("Estoque nao encontrado");
@@ -94,20 +94,24 @@ export class EstoqueService {
         return estoque;
     }
 
-    listarEstoque(): Estoque[] {
-        return this.estoqueRepository.listarEstoque();
+    async listarEstoque(): Promise<Estoque[]> {
+        let lista = await this.estoqueRepository.listarEstoque();
+        if (!lista) {
+            throw new Error("Estoque não encontrado!!");
+        }
+        return lista; //
     }
 
-    buscarPorID(id: any): Estoque {
+    async buscarPorID(id: any): Promise<Estoque> {
         const idNumero = Number(id);
-        const estoque = this.estoqueRepository.buscarPorID(idNumero);
+        const estoque = await this.estoqueRepository.buscarPorID(idNumero);
         if (!estoque) {
             throw new Error("Estoque nao encontrado");
         }
         return estoque;
     }
 
-    buscarPorCarro(carro: any): Estoque {
+    async buscarPorCarro(carro: any): Promise<Estoque> {
         const idCarroNum = Number(carro);
         const list = this.estoqueRepository.listarEstoque();
         const estoque = list.find(e => e.carro === idCarroNum);
@@ -117,7 +121,7 @@ export class EstoqueService {
         return estoque;
     }
 
-    removerEstoque(id: number): void {
+    async removerEstoque(id: number): Promise<void> {
         const estoque = this.estoqueRepository.buscarPorID(id);
         if (!estoque) {
             throw new Error("Estoque nao encontrado");
