@@ -4,3 +4,4 @@ Concluidomodel notaFiscal, estoque, carro e vendedor:
 O repository vendedor foi concluido
 
 Remoção de legado: Apaguei a pasta base antiga e pdf antigo
+upload pdf novo
