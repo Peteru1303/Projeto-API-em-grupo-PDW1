@@ -86,7 +86,7 @@ export class VendedorController {
         }
     }
 
-    async listaTodasNotasFiscaisVendedor(req: Request, res: Response): Promise<void> {
+    async listaTodasNotasFiscaisVendedor(req: Request, res: Response): Promise<void> {//Implementado no Router
         try {
             let id = Number(req.params.id)
             const notasFiscais = await this.vendedorService.listaTodasNotasFiscaisVendedor(id)

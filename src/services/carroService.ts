@@ -8,14 +8,14 @@ export class CarroService {
     estoqueRepository = EstoqueRepositorio.getInstance();
     notaFiscalRepository = NotaFiscalRepositorio.getInstance();
 
-    cadastrarCarro(carro: any): Carro {
+    async cadastrarCarro(carro: any): Promise<Carro> {
         const { marca, modelo, ano, placa, preco } = carro
 
         if (!placa) {
             throw new Error("A Placa é obrigatória");
         }
 
-        let existe = this.carroRepository.buscarPorPlaca(placa)
+        let existe = await this.carroRepository.buscarPorPlaca(placa)
         if (existe) {
             throw new Error("Não é permitido cadastrar dois carros com a mesma placa.")
         }
@@ -33,14 +33,14 @@ export class CarroService {
 
         const newCarro = new Carro(carro.marca, carro.modelo, carro.ano, carro.placa, carro.preco, carro.cor);
 
-        this.carroRepository.novoCarro(newCarro)
+        await this.carroRepository.novoCarro(newCarro)
 
         return newCarro;
     }
 
-    listarCarrosDisponíveis(): Carro[] {
-        const listCarros = this.carroRepository.listarCarros();
-        const listEstoque = this.estoqueRepository.listarEstoque();
+    async listarCarrosDisponíveis(): Promise<Carro[]> {
+        const listCarros = await this.carroRepository.listarCarros();
+        const listEstoque = await this.estoqueRepository.listarEstoque();
         const estoqueComQuantidade = listEstoque.filter(e => e.quantidade > 0)
         let carros: Carro[] = []
         for (let i = 0; i < estoqueComQuantidade.length; i++) {
@@ -52,12 +52,12 @@ export class CarroService {
         return carros;
     }
 
-    removerCarro(idRem: number): void {
-        const listEstoque = this.estoqueRepository.listarEstoque();
-        const carro = this.carroRepository.buscarPorID(idRem);
+    async removerCarro(idRem: number): Promise<void> {
+        const listEstoque = await this.estoqueRepository.listarEstoque();
+        const carro = await this.carroRepository.buscarPorID(idRem);
         const carroEstoque = listEstoque.find(estoque => estoque.carro === idRem);
 
-        const listNotaFiscal = this.notaFiscalRepository.listarNotasFiscais();
+        const listNotaFiscal = await this.notaFiscalRepository.listarNotasFiscais();
         const carroNotaFiscal = listNotaFiscal.find(notaFiscal => notaFiscal.carro === idRem);
 
         if (!carro) {
@@ -72,15 +72,15 @@ export class CarroService {
             throw new Error("Não é permitido remover um carro que possua notas fiscais vinculadas.");
         }
 
-        this.carroRepository.removerCarro(idRem);
+        await this.carroRepository.removerCarro(idRem);
     }
 
-    listarCarros(): Carro[] {
-        return this.carroRepository.listarCarros();
+    async listarCarros(): Promise<Carro[]> {
+        return await this.carroRepository.listarCarros();
     }
 
-    atualizarCarro(carroData: any, id: number): Carro {
-        const carro = this.carroRepository.buscarPorID(id);
+    async atualizarCarro(carroData: any, id: number): Promise<Carro> {
+        const carro = await this.carroRepository.buscarPorID(id);
         if (!carro) {
             throw new Error("Carro não cadastrado!!!");
         }
@@ -90,14 +90,12 @@ export class CarroService {
             throw new Error("Novos dados devem conter marca, modelo, ano, placa e preco");
         }
 
-        this.carroRepository.atualizarCarro(carroData, id);
+        await this.carroRepository.atualizarCarro(carroData, id);
         return carro;
     }
 
-    buscarPorID(id: any): Carro {
-        let lista = this.carroRepository.listarCarros();
-        let carro = lista.find(p => p.id === id);
-
+    async buscarPorID(id: number): Promise<Carro> {
+        const carro = await this.carroRepository.buscarPorID(id);
         if (!carro) {
             throw new Error("Carro não encontrado!!\n");
         }

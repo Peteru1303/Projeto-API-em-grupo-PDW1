@@ -1,3 +1,4 @@
+import { executarComandoSQL } from "../database/mysql";
 import { Carro } from "../models/Carro";
 
 export class CarroRepositorio {
@@ -21,45 +22,63 @@ export class CarroRepositorio {
             modelo VARCHAR(255) NOT NULL,
             ano number(4) NOT NULL,
             placa VARCHAR(255) NOT NULL,
-            preco VARCHAR(255),
+            preco NUMBER(10, 2) NOT NULL,
             cor VARCHAR(255)
         );        
         `
     }
 
-    listarCarros(): Carro[] {
-        return this.carroList;
+    async listarCarros(): Promise<Carro[]> {
+        const resultado = await executarComandoSQL("SELECT * FROM Carro", []);
+
+        const carrosList: Carro[] = resultado.map((linha: any) => {
+            return new Carro(linha.id, linha.marca, linha.modelo, linha.ano, linha.placa, linha.preco, linha.cor);
+        });
+        return carrosList;
     }
 
-    buscarPorID(id: number): Carro | undefined {
-        return this.carroList.find(carro => carro.id === id);
+    async buscarPorID(id: number): Promise<Carro | null> {
+        const resultado = await executarComandoSQL("SELECT * FROM Carro WHERE id = ?", [id]);
+
+        if (resultado.length === 0) return null;
+
+        const linha = resultado[0];
+        return new Carro(linha.id, linha.marca, linha.modelo, linha.ano, linha.placa, linha.preco, linha.cor);
     }
 
-    buscarPorPlaca(placa: string): Carro | undefined {
-        return this.carroList.find(carro => carro.placa === placa);
+    async buscarPorPlaca(placa: string): Promise<Carro | null> {
+        const resultado = await executarComandoSQL("SELECT * FROM Carro WHERE placa = ?", [placa]);
+
+        if (resultado.length === 0) return null;
+
+        const linha = resultado[0];
+        return new Carro(linha.id, linha.marca, linha.modelo, linha.ano, linha.placa, linha.preco, linha.cor);
     }
 
-    atualizarCarro(carroData: any, idAlt: number): void {
+    async atualizarCarro(carroData: any, idAlt: number): Promise<void> {
         let carro: Carro | undefined = this.buscarPorID(idAlt);
 
         if (carro) {
-            carro.marca = carroData.marca;
-            carro.modelo = carroData.modelo;
-            carro.ano = carroData.ano;
-            carro.placa = carroData.placa;
-            carro.preco = carroData.preco;
-            carro.cor = carroData.cor;
+            await executarComandoSQL(
+                "UPDATE Carro SET marca = ?, modelo = ?, ano = ?, placa = ?, preco = ?, cor = ? WHERE id = ?",
+                [carroData.marca, carroData.modelo, carroData.ano, carroData.placa, carroData.preco, carroData.cor, idAlt]
+            );
         }
     }
 
-    removerCarro(idRem: number): void {
+    async removerCarro(idRem: number): Promise<void> {
         let carro: Carro | undefined = this.buscarPorID(idRem);
 
         if(carro){
-            let index = this.carroList.indexOf(carro);
-            this.carroList.splice(index, 1);
-            /* ou pop */
+            await executarComandoSQL("DELETE FROM Carro WHERE id = ?", [idRem]);
         }
     }
-    //Adicionar função de listar carros com estoque maior que 0
+
+    async listarCarrosDisponiveis(): Promise<Carro[]> {
+        const resultado = await executarComandoSQL("SELECT * FROM Carro WHERE estoque > 0", []);
+
+        return resultado.map((linha: any) => {
+            return new Carro(linha.id, linha.marca, linha.modelo, linha.ano, linha.placa, linha.preco, linha.cor);
+        });
+    }
 }
