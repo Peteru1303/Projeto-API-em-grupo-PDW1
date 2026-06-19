@@ -8,6 +8,9 @@ import { NotaFiscalController } from '../controllers/notaFiscalController'
 const router = Router();
 const controller = new ClienteController();
 const estoquecontroller = new EstoqueController();
+const vendedorController = new VendedorController();
+const carroController = new CarroController();
+const notaFiscalController = new NotaFiscalController();
 
 // Clientes
 router.get('/clientes', (req: Request, res: Response) => { controller.listarCliente(req, res); });
@@ -40,17 +43,17 @@ router.delete('/carros/:id', (req: Request, res: Response) => { controller.remov
 
 //Vendedor 
 
-router.get('/estoque', (req: Request, res: Response) => { controller.listarEstoque(req, res); });
+router.post('/vendedor', (req: Request, res: Response) => { controller.cadastrarVendedor(req, res); });//OK 1) 
 
-router.get('/estoque/:id', (req: Request, res: Response) => { controller.buscaEstoquePorID(req, res); });
+router.get('/vendedor/:id', (req: Request, res: Response) => { controller.buscaVendedorPorID(req, res); });//OK 1)
 
-router.get('/estoque/carro/:id_carro', (req: Request, res: Response) => { controller.buscaEstoqueCarro(req, res); });
+router.get('/vendedor', (req: Request, res: Response) => { controller.listarVendedores(req, res); });//OK 1)
 
-router.post('/estoque', (req: Request, res: Response) => { controller.cadastraEstoque(req, res); });
+router.put('/vendedor/:id', (req: Request, res: Response) => { controller.atualizarVendedor(req, res); });//OK 1)
 
-router.put('/estoque/:id', (req: Request, res: Response) => { controller.atualizarEstoque(req, res); });
+router.delete('/vendedor/:id', (req: Request, res: Response) => { controller.removeVendedor(req, res); });//OK 1)
 
-router.delete('/estoque/:id', (req: Request, res: Response) => { controller.removeEstoque(req, res); });
+router.get('/vendedor/notas/:id', (req: Request, res: Response) => { controller.listaTodasNotasFiscaisVendedor(req, res); });//OK 1)
 
 //Estoque 
 

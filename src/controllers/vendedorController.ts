@@ -5,7 +5,7 @@ import { VendedorService } from "./../services/vendedorService"
 export class VendedorController {
     private vendedorService = new VendedorService()
 
-    async cadastraVendedor(req: Request, res: Response): Promise<void> {
+    async cadastraVendedor(req: Request, res: Response): Promise<void> { //Implementado no Router
         try {
             let data: any = req.body
             const vendedor = await this.vendedorService.cadastrar(data)
@@ -23,7 +23,7 @@ export class VendedorController {
         }
     }
 
-    async listarVendedor(req: Request, res: Response): Promise<void> {
+    async listarVendedor(req: Request, res: Response): Promise<void> {//Implementado no Router
         try {
             const vendedor = await this.vendedorService.listarVendedor()
             res.status(200).json(vendedor)
@@ -34,7 +34,7 @@ export class VendedorController {
         }
     }
 
-    async buscaVendedorPorID(req: Request, res: Response): Promise<void> {
+    async buscaVendedorPorID(req: Request, res: Response): Promise<void> {//Implementado no Router
         try {
             let idBusca = Number(req.params.id) //corrigo para Number, pois o id é do tipo number, e o service espera um number para buscar por ID. Se for string, o service não encontrará o vendedor mesmo que exista.
             const vendedor = await this.vendedorService.buscarPorID(idBusca)
@@ -52,7 +52,7 @@ export class VendedorController {
         }
     }
 
-    async atualizaVendedor(req: Request, res: Response): Promise<void> {
+    async atualizaVendedor(req: Request, res: Response): Promise<void> {//Implementado no Router
         try {
             let id = Number(req.params.id)
             let data: any = req.body
@@ -72,7 +72,7 @@ export class VendedorController {
         }
     }
 
-    async removeVendedor(req: Request, res: Response): Promise<void> {
+    async removeVendedor(req: Request, res: Response): Promise<void> {//Implementado no Router
         try {
             let id = Number(req.params.id)
             await this.vendedorService.removerVendedor(id)
