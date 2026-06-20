@@ -31,7 +31,7 @@ export class CarroService {
             throw new Error("O preço deve ser um valor maior que zero")
         }
 
-        const newCarro = new Carro(carro.marca, carro.modelo, carro.ano, carro.placa, carro.preco, carro.cor);
+        const newCarro = new Carro(carro.id, carro.marca, carro.modelo, carro.ano, carro.placa, carro.preco, carro.cor);
 
         await this.carroRepository.novoCarro(newCarro)
 

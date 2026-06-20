@@ -4,19 +4,19 @@ import { CarroService } from "../services/carroService"
 export class CarroController {
     private carroService = new CarroService();
 
-    async function listarCarro(req: Request, res: Response): Promise<void> {
+    async listarCarro(req: Request, res: Response): Promise<void> {
         try {
-            const carro = await carroService.listarCarros()
+            const carro = await this.carroService.listarCarros()
             res.status(200).json(carro)
         } catch (e: any) {
             res.status(404).json({ Message: e.message })
         }
     }
 
-    async function buscaCarroPorID(req: Request, res: Response): Promise<void> {
+    async buscaCarroPorID(req: Request, res: Response): Promise<void> {
         try {
             let idBusca = Number(req.params.id)
-            const carro = await carroService.buscarPorID(idBusca) 
+            const carro = await this.carroService.buscarPorID(idBusca) 
             res.status(200).json(carro)
         } catch (e: any) {
             if (e.message === "Carro não encontrado!!\n") {
@@ -27,20 +27,20 @@ export class CarroController {
         }
     }
 
-    async function listaCarroDisponivel(req: Request, res: Response): Promise<void> {
+    async listaCarroDisponivel(req: Request, res: Response): Promise<void> {
         try {
-            const carros = await carroService.listarCarrosDisponíveis()
+            const carros = await this.carroService.listarCarrosDisponíveis()
             res.status(200).json(carros)
         } catch (e: any) {
             res.status(404).json({ Message: e.message })
         }
     }
 
-    async function cadastraCarro(req: Request, res: Response): Promise<void> {
+    async cadastraCarro(req: Request, res: Response): Promise<void> {
         try {
             let data: any = req.body
 
-            const carro = await carroService.cadastrarCarro(data)
+            const carro = await this.carroService.cadastrarCarro(data)
 
             res.status(201).json(carro)
         } catch (e: any) {
@@ -52,12 +52,12 @@ export class CarroController {
         }
     }
 
-    async function atualizarCarroExistente(req: Request, res: Response): Promise<void> {
+    async atualizarCarroExistente(req: Request, res: Response): Promise<void> {
         try {
             let id = Number(req.params.id)
             let data: any = req.body
 
-            const carro = await carroService.atualizarCarro(data, id) 
+            const carro = await this.carroService.atualizarCarro(data, id) 
 
             res.status(200).json(carro)
         } catch (e: any) {
@@ -69,11 +69,11 @@ export class CarroController {
         }
     }
 
-    async function removerCarro(req: Request, res: Response): Promise<void> {
+    async removerCarro(req: Request, res: Response): Promise<void> {
         try {
             let idRem = Number(req.params.id)
             
-            const carro = await carroService.removerCarro(idRem)
+            const carro = await this.carroService.removerCarro(idRem)
             
             res.status(200).json({ Message: "Carro removido com sucesso" })
         } catch (e: any) {

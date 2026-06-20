@@ -56,22 +56,15 @@ export class CarroRepositorio {
     }
 
     async atualizarCarro(carroData: any, idAlt: number): Promise<void> {
-        let carro: Carro | undefined = this.buscarPorID(idAlt);
-
-        if (carro) {
             await executarComandoSQL(
                 "UPDATE Carro SET marca = ?, modelo = ?, ano = ?, placa = ?, preco = ?, cor = ? WHERE id = ?",
                 [carroData.marca, carroData.modelo, carroData.ano, carroData.placa, carroData.preco, carroData.cor, idAlt]
             );
-        }
+        
     }
 
     async removerCarro(idRem: number): Promise<void> {
-        let carro: Carro | undefined = this.buscarPorID(idRem);
-
-        if(carro){
             await executarComandoSQL("DELETE FROM Carro WHERE id = ?", [idRem]);
-        }
     }
 
     async listarCarrosDisponiveis(): Promise<Carro[]> {
