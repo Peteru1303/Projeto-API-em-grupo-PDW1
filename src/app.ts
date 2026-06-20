@@ -1,40 +1,10 @@
 import express from "express"
-import router from "./routes/router";
-app.use('/', router);
 import { inicializarBanco } from "./database/mysql";
-import {
-    listarVendedor,
-    buscaVendedorPorID,
-    cadastraVendedor,
-    atualizaVendedor,
-    removeVendedor,
-    listaTodasNotasFiscaisVendedor
-} from "./controllers/vendedorController";
-import { 
-    listarCarro,
-    buscaCarroPorID,
-    listaCarroDisponivel, 
-    cadastraCarro,
-    atualizarCarroExistente,
-    removerCarro 
- } from "./controllers/carroController";
-import { 
-    listarEstoque,
-    buscaEstoquePorID,
-    buscaEstoqueCarro,
-    cadastraEstoque,
-    atualizarEstoque,
-    removeEstoque
- } from "./controllers/estoqueController";
-import {
-    listarNotasFiscal,
-    buscaNotaFiscaPorID,
-    emiteNotaFiscal
-} from "./controllers/notaFiscalController";
-
 const app = express()
+import router from "./routes/router";
 const PORT = process.env.PORT ?? 3000
 app.use(express.json())
+app.use('/', router);
 
 function logInfo() {
     console.log(`API em execucao na URL: http://localhost:${PORT}`);
@@ -42,9 +12,9 @@ function logInfo() {
 
 //Classes já feitas
 //Clientes -- OK
-//Vendedor -- Router OK, resta repository e controller
-//Carro -- Router OK, resta repository e controller
-//Estoque -- Router OK, resta repository e controller
+//Vendedor -- OK
+//Carro -- OK
+//Estoque -- OK
 //NotaFiscal -- Router OK, resta repository e controller
 
 async function startServer() {
