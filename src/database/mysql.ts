@@ -4,9 +4,9 @@ import { ClienteRepositorio } from '../repositories/clienteRepository';
 const dbConfig = {
     host: 'localhost',
     port: 3306,
-    user: 'root',
-    password: 'mysql',
-    database: 'aula21'
+    user: 'project2',
+    password: 'Project2',
+    database: 'project2'
 };
 
 const mysqlConnection: Connection = mysql.createConnection(dbConfig);
