@@ -12,13 +12,13 @@ export class NotaFiscalService {
     clienteRepository = ClienteRepositorio.getInstance();
     vendedorRepository = VendedorRepositorio.getInstance();
 
-    cadastrarNotaFiscal(notaFiscal: any): NotaFiscal {
+    async cadastrarNotaFiscal(notaFiscal: any): Promise<NotaFiscal> {
         const { numero_nota, data_emissao, valor_total, cliente, vendedor, carro } = notaFiscal
 
         //Regra 1: Uma nota fiscal somente pode ser emitida se o carro associado possuir quantidade > 0 em estoque.
         //Ao emitir, a quantidade em estoque é automaticamente decrementada em 1 unidade.
 
-        const listEstoque = this.estoqueRepository.listarEstoque(); //Faz a listagem do estoque
+        const listEstoque = await this.estoqueRepository.listarEstoque(); //Faz a listagem do estoque
         const estoqueCarro = listEstoque.find(e => e.carro === carro); //Acha o estoque do carro associado
 
         if (estoqueCarro && estoqueCarro.quantidade <= 0) { //Verifica se o estoque tem o carro e se tem quantidade
@@ -43,10 +43,10 @@ export class NotaFiscalService {
         //Regra 4: Os campos id_cliente, id_vendedor e id_carro são obrigatórios e devem referenciar registros
         //existentes no sistema.
 
-        const listCliente = this.clienteRepository.listarClientes();
+        const listCliente = await this.clienteRepository.listarClientes();
         const clienteNotaFiscal = listCliente.find(c => c.id === cliente);
 
-        const listVendedor = this.vendedorRepository.listarVendedor();
+        const listVendedor = await this.vendedorRepository.listarVendedor();
         const vendedorNotaFiscal = listVendedor.find(v => v.id === vendedor);
 
         //reutilizando a pesquisa de carro da regra 1 para definir a booleana estoqueCarro
@@ -59,11 +59,11 @@ export class NotaFiscalService {
             throw new Error("A data de emissão tem que ser a data atual ou uma data anterior à atual")
         }
 
-        const newNotaFiscal = new NotaFiscal(numero_nota, data_emissao, valor_total, cliente, vendedor, carro); 
+        const newNotaFiscal = new NotaFiscal(null, numero_nota, data_emissao, valor_total, cliente, vendedor, carro); 
 
         this.notaFiscalRepository.inserirNotaFiscal(newNotaFiscal)
 
-        this.DecrementarEstoqueCarro(carro);
+        await this.DecrementarEstoqueCarro(carro);
 
         return newNotaFiscal;
     }
@@ -87,8 +87,8 @@ export class NotaFiscalService {
         return cliente;
     }
 
-    DecrementarEstoqueCarro(carro: any): void {
-        const listEstoque = this.estoqueRepository.listarEstoque();
+    async DecrementarEstoqueCarro(carro: any): Promise<void> {
+        const listEstoque = await this.estoqueRepository.listarEstoque();
         const estoqueCarro = listEstoque.find(e => e.carro === carro);
 
         if (estoqueCarro) {
