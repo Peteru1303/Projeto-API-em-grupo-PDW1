@@ -4,7 +4,7 @@ import { ClienteService } from "../services/clienteService"
 export class ClienteController {
     private clienteService = new ClienteService();
 
-    async cadastraCiente(req: Request, res: Response): Promise<void> {
+    async cadastraCliente(req: Request, res: Response): Promise<void> {
         try {
             let data: any = req.body
             const cliente = await this.clienteService.cadastrarCliente(data)
