@@ -30,7 +30,7 @@ export class NotaFiscalService {
 
         //Regra 2: O campo numero_nota é obrigatório e deve ser único no sistema.
 
-        let buscarNumNota = this.notaFiscalRepository.buscarPorNumeroNota(numero_nota);
+        let buscarNumNota = await this.notaFiscalRepository.buscarPorNumeroNota(numero_nota);
         if (buscarNumNota) {
             throw new Error("O numero da nota fiscal já existe");
         }
@@ -69,22 +69,22 @@ export class NotaFiscalService {
     }
 
     //lista todos os clientes cadastrados
-    listarNotasFiscais(): NotaFiscal[] {
-        let lista = this.notaFiscalRepository.listarNotasFiscais();
+    async listarNotasFiscais(): Promise<NotaFiscal[]> {
+        let lista = await this.notaFiscalRepository.listarNotasFiscais();
         if (!lista) {
-            throw new Error("Lista de cliente não encontrada!!\n");
+            throw new Error("Lista de Nota Fiscal não encontrada!!\n");
         }
         return lista;
     }
     
-    buscarPorID(id: any): NotaFiscal {
-        let lista = this.notaFiscalRepository.listarNotasFiscais();
+    async buscarPorID(id: any): Promise<NotaFiscal> {
+        let lista = await this.notaFiscalRepository.listarNotasFiscais();
         let idNumero = Number(id);
-        let cliente = lista.find(p => p.id === idNumero);
-        if (!cliente) {
-            throw new Error("Cliente não encontrado!!\n");
+        let notaFiscal = lista.find(p => p.id === idNumero);
+        if (!notaFiscal) {
+            throw new Error("Nota Fiscal não encontrada!!\n");
         }
-        return cliente;
+        return notaFiscal;
     }
 
     async DecrementarEstoqueCarro(carro: any): Promise<void> {

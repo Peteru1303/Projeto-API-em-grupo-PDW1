@@ -1,3 +1,4 @@
+import { executarComandoSQL } from "../database/mysql";
 import { NotaFiscal } from "./../models/NotaFiscal";
 
 export class NotaFiscalRepositorio {
@@ -13,60 +14,112 @@ export class NotaFiscalRepositorio {
         return this.instance;
     }
 
-    inserirNotaFiscal(NotaFiscal: NotaFiscal): void {
-        this.NotaFiscalList.push(NotaFiscal);
+    static getCreateTableQuery(): string {
+        return `
+        CREATE TABLE IF NOT EXISTS NotaFiscal (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            numero_nota VARCHAR(255) NOT NULL,
+            data_emissao DATE NOT NULL,
+            valor_total INT NOT NULL,
+            cliente INT NOT NULL,
+            vendedor INT NOT NULL,
+            carro INT NOT NULL
+        );
+        `;
     }
 
-    listarNotasFiscais(): NotaFiscal[] {
-        return this.NotaFiscalList;
+
+    async inserirNotaFiscal(notaFiscal: NotaFiscal): Promise<NotaFiscal> {  
+        const resultado = await executarComandoSQL(
+            "INSERT INTO NotaFiscal (numero_nota, data_emissao, valor_total, cliente, vendedor, carro) VALUES (?, ?, ?, ?, ?, ?)",
+            [notaFiscal.numero_nota, notaFiscal.data_emissao, notaFiscal.valor_total, notaFiscal.cliente, notaFiscal.vendedor, notaFiscal.carro]
+        )
+
+        const idGerado = resultado.insertId;
+
+        const newNotaFiscal = new NotaFiscal(idGerado, notaFiscal.numero_nota, notaFiscal.data_emissao, notaFiscal.valor_total, notaFiscal.cliente, notaFiscal.vendedor, notaFiscal.carro);
+        
+        console.log('Nova nota fiscal inserida com sucesso:', newNotaFiscal);
+        return newNotaFiscal;
     }
 
-    listarNotasFiscaisVendedor(id: number): NotaFiscal[] {
-        const listNotasFiscais = this.listarNotasFiscais();
-
-        const listaVendedorNFC = listNotasFiscais.filter(n => n.vendedor === id);
-
-        return listaVendedorNFC;
-    }
-
-    buscarPorID(id: number): NotaFiscal | undefined {
-        return this.NotaFiscalList.find(nota => nota.id === id);
-    }
-
-    buscarPorNumeroNota(numero_nota: string): NotaFiscal | undefined {
-        return this.NotaFiscalList.find(notaFiscal => notaFiscal.numero_nota === numero_nota);
-    }
-
-    buscarPorNumeroNotaCliente(cliente_id: number): NotaFiscal | undefined {
-        return this.NotaFiscalList.find(notaFiscal => notaFiscal.cliente === cliente_id);
-    }
-
-    buscarPorNumeroNotaVendedor(vendedor_id: number): NotaFiscal | undefined {
-        return this.NotaFiscalList.find(notaFiscal => notaFiscal.vendedor === vendedor_id);
-    }
-
-    buscarPorNumeroNotaCarro(carro_id: number): NotaFiscal | undefined {
-        return this.NotaFiscalList.find(notaFiscal => notaFiscal.carro === carro_id);
-    }
-
-    atualizarNotaFiscal(NotaFiscalData: any, id: number): void {
-        const index = this.NotaFiscalList.findIndex(nota => nota.id === id);
-
-        if (index !== -1) {
-            this.NotaFiscalList[index].numero_nota = NotaFiscalData.numero_nota;
-            this.NotaFiscalList[index].data_emissao = NotaFiscalData.data_emissao;
-            this.NotaFiscalList[index].valor_total = NotaFiscalData.valor_total;
-            this.NotaFiscalList[index].cliente = NotaFiscalData.cliente;
-            this.NotaFiscalList[index].vendedor = NotaFiscalData.vendedor;
-            this.NotaFiscalList[index].carro = NotaFiscalData.carro;
+    async listarNotasFiscais(): Promise<NotaFiscal[]> {
+            const linhas = await executarComandoSQL("SELECT * FROM NotaFiscal", []);
+                    
+            const notaFiscal: NotaFiscal[] = linhas.map((linha: any) => {
+                return new NotaFiscal(linha.id, linha.numero_nota, linha.data_emissao, linha.valor_total, linha.cliente, linha.vendedor, linha.carro);
+            });
+    
+            return notaFiscal;
         }
+    async listarNotasFiscaisVendedor(vendedor: number): Promise<NotaFiscal[]> { //utilizando carro disponivel como referencia
+            const resultado = await executarComandoSQL("SELECT * FROM NotaFiscal WHERE vendedor = ?", [vendedor]);
+    
+            return resultado.map((linha: any) => {
+                return new NotaFiscal(linha.id, linha.numero_nota, linha.data_emissao, linha.valor_total, linha.cliente, linha.vendedor, linha.carro);
+            });
+        }
+
+    async buscarPorID(id: number): Promise<NotaFiscal | null> {
+            const linhas = await executarComandoSQL("SELECT * FROM NotaFiscal WHERE id = ?", [id]);
+            
+            if (linhas.length === 0) return null;
+            
+            const linha = linhas[0];
+            return new NotaFiscal(linha.id, linha.numero_nota, linha.data_emissao, linha.valor_total, linha.cliente, linha.vendedor, linha.carro);
+        }
+
+    async buscarPorNumero(id: number): Promise<NotaFiscal | null> {
+            const linhas = await executarComandoSQL("SELECT * FROM NotaFiscal WHERE id = ?", [id]);
+            
+            if (linhas.length === 0) return null;
+            
+            const linha = linhas[0];
+            return new NotaFiscal(linha.id, linha.numero_nota, linha.data_emissao, linha.valor_total, linha.cliente, linha.vendedor, linha.carro);
+        }
+    
+    async buscarPorNumeroNota(numero_nota: string): Promise<NotaFiscal | null> {
+            const linhas = await executarComandoSQL("SELECT * FROM NotaFiscal WHERE numero_nota = ?", [numero_nota]);
+            
+            if (linhas.length === 0) return null;
+            
+            const linha = linhas[0];
+            return new NotaFiscal(linha.id, linha.numero_nota, linha.data_emissao, linha.valor_total, linha.cliente, linha.vendedor, linha.carro);
+        }
+    async buscarPorNumeroNotaCliente(cliente: number): Promise<NotaFiscal | null> {
+            const linhas = await executarComandoSQL("SELECT * FROM NotaFiscal WHERE cliente = ?", [cliente]);
+            
+            if (linhas.length === 0) return null;
+            
+            const linha = linhas[0];
+            return new NotaFiscal(linha.id, linha.numero_nota, linha.data_emissao, linha.valor_total, linha.cliente, linha.vendedor, linha.carro);
+        }
+
+     async buscarPorNumeroNotaVendedor(vendedor: number): Promise<NotaFiscal | null> {
+            const linhas = await executarComandoSQL("SELECT * FROM NotaFiscal WHERE vendedor = ?", [vendedor]);
+            
+            if (linhas.length === 0) return null;
+            
+            const linha = linhas[0];
+            return new NotaFiscal(linha.id, linha.numero_nota, linha.data_emissao, linha.valor_total, linha.cliente, linha.vendedor, linha.carro);
+        }
+
+    async buscarPorNumeroNotaCarro(carro: number): Promise<NotaFiscal | null> {
+            const linhas = await executarComandoSQL("SELECT * FROM NotaFiscal WHERE carro = ?", [carro]);
+            
+            if (linhas.length === 0) return null;
+            
+            const linha = linhas[0];
+            return new NotaFiscal(linha.id, linha.numero_nota, linha.data_emissao, linha.valor_total, linha.cliente, linha.vendedor, linha.carro);
+        }
+async atualizarNotaFiscal(notaFiscalData: any, idAlt: number): Promise<void> {
+            await executarComandoSQL(
+                "UPDATE NotaFiscal SET numero_nota = ?, data_emissao = ?, valor_total = ?, cliente = ?, vendedor = ?, carro = ? WHERE id = ?",
+                [notaFiscalData.numero_nota, notaFiscalData.data_emissao, notaFiscalData.valor_total, notaFiscalData.cliente, notaFiscalData.vendedor, notaFiscalData.carro, idAlt]
+            )
     }
 
-    removerNotaFiscal(id: number): void {
-        const index = this.NotaFiscalList.findIndex(nota => nota.id === id);
-
-        if (index !== -1) {
-            this.NotaFiscalList.splice(index, 1);
-        }
+    async removerEstoque(id: number): Promise<void> {
+        await executarComandoSQL("DELETE FROM NotaFiscal WHERE id = ?", [id]);
     }
 }

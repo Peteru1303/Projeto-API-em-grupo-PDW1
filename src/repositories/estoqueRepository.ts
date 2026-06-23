@@ -28,7 +28,7 @@ export class EstoqueRepositorio {
 
     async novoEstoque(estoque: Estoque): Promise<Estoque> {
         const resultado = await executarComandoSQL(
-            "INSERT INTO Estoque (id, carro, quantidade, localizacao_patio, data_entrada) VALUES (?, ?, ?, ?)",
+            "INSERT INTO Estoque (carro, quantidade, localizacao_patio, data_entrada) VALUES (?, ?, ?, ?)",
             [estoque.carro, estoque.quantidade, estoque.localizacao_patio, estoque.data_entrada]
         )
 
