@@ -12,3 +12,5 @@ obrigatoriamente tive q adicionar funções no repository do notaFiscal para cap
 
 
 Subi o teste e conclui o notaFiscalController. notaFiscalService 
+
+ajustei repository, service do carro (tinha uma confusão entre inserir e criar, tive q criar o insert e migrar o create para getCreateTableQuery, ajustei erros em cadeia), ajustei nomeclatura do router vendedores, ajustei o mysql q estava faltando criar outras tabelas, 

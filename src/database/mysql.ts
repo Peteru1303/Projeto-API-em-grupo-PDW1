@@ -1,5 +1,9 @@
 import mysql, { Connection, QueryError } from 'mysql2';
 import { ClienteRepositorio } from '../repositories/clienteRepository';
+import { VendedorRepositorio } from '../repositories/vendedorRepository';
+import { CarroRepositorio } from '../repositories/carroRepository';
+import { EstoqueRepositorio } from '../repositories/estoqueRepository';
+import { NotaFiscalRepositorio } from '../repositories/notaFiscalRepository';
 
 const dbConfig = {
     host: 'localhost',
@@ -37,6 +41,10 @@ export async function inicializarBanco(): Promise<void> {
 
     const schemas = [
         ClienteRepositorio.getCreateTableQuery(),
+        VendedorRepositorio.getCreateTableQuery(),
+        CarroRepositorio.getCreateTableQuery(),
+        EstoqueRepositorio.getCreateTableQuery(),
+        NotaFiscalRepositorio.getCreateTableQuery(),
     ];
 
     try {

@@ -43,17 +43,17 @@ router.delete('/carros/:id', (req: Request, res: Response) => { carroController.
 
 //Vendedor 
 
-router.post('/vendedor', (req: Request, res: Response) => { vendedorController.cadastraVendedor(req, res); });//OK 1) 
+router.post('/vendedores', (req: Request, res: Response) => { vendedorController.cadastraVendedor(req, res); });//OK 1) 
 
-router.get('/vendedor/:id', (req: Request, res: Response) => { vendedorController.buscaVendedorPorID(req, res); });//OK 1)
+router.get('/vendedores/:id', (req: Request, res: Response) => { vendedorController.buscaVendedorPorID(req, res); });//OK 1)
 
-router.get('/vendedor', (req: Request, res: Response) => { vendedorController.listarVendedor(req, res); });//OK 1)
+router.get('/vendedores', (req: Request, res: Response) => { vendedorController.listarVendedor(req, res); });//OK 1)
 
-router.put('/vendedor/:id', (req: Request, res: Response) => { vendedorController.atualizaVendedor(req, res); });//OK 1)
+router.put('/vendedores/:id', (req: Request, res: Response) => { vendedorController.atualizaVendedor(req, res); });//OK 1)
 
-router.delete('/vendedor/:id', (req: Request, res: Response) => { vendedorController.removeVendedor(req, res); });//OK 1)
+router.delete('/vendedores/:id', (req: Request, res: Response) => { vendedorController.removeVendedor(req, res); });//OK 1)
 
-router.get('/vendedor/notas/:id', (req: Request, res: Response) => { vendedorController.listaTodasNotasFiscaisVendedor(req, res); });//OK 1)
+router.get('/vendedores/notas/:id', (req: Request, res: Response) => { vendedorController.listaTodasNotasFiscaisVendedor(req, res); });//OK 1)
 
 //Estoque 
 

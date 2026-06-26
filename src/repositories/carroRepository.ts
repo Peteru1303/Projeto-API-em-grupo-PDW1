@@ -14,18 +14,32 @@ export class CarroRepositorio {
         return this.instance;
     }
 
-    novoCarro(carro: Carro): String { //Matheus: Não finalizado ainda
+    static getCreateTableQuery(): string {
         return `
-        CREATE TABLE IF NOT EXISTS Cliente (
+        CREATE TABLE IF NOT EXISTS Carro (
             id INT AUTO_INCREMENT PRIMARY KEY,
             marca VARCHAR(255) NOT NULL,
             modelo VARCHAR(255) NOT NULL,
-            ano number(4) NOT NULL,
+            ano INT NOT NULL,
             placa VARCHAR(255) NOT NULL,
-            preco NUMBER(10, 2) NOT NULL,
+            preco DECIMAL(10,2) NOT NULL,
             cor VARCHAR(255)
-        );        
-        `
+        );
+        `;
+    }
+
+    async novoCarro(carro: Carro): Promise<Carro> {
+        const resultado = await executarComandoSQL(
+            "INSERT INTO Carro (marca, modelo, ano, placa, preco, cor) VALUES (?, ?, ?, ?, ?, ?)",
+            [carro.marca, carro.modelo, carro.ano, carro.placa, carro.preco, carro.cor]
+        );
+
+        const idGerado = resultado.insertId;
+
+        const newCarro = new Carro(idGerado, carro.marca, carro.modelo, carro.ano, carro.placa, carro.preco, carro.cor);
+
+        console.log('Novo carro inserido com sucesso:', newCarro);
+        return newCarro;
     }
 
     async listarCarros(): Promise<Carro[]> {

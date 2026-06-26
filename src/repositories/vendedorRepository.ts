@@ -3,7 +3,6 @@ import { Vendedor } from "../models/Vendedor";
 
 export class VendedorRepositorio {
     private static instance: VendedorRepositorio;
-    private vendedorList: Vendedor[] = []; // talvez nao vai precisar disso
 
     private constructor() { };
 
@@ -57,7 +56,7 @@ export class VendedorRepositorio {
         if (linhas.length === 0) return null;
         
         const linha = linhas[0];
-        return new Vendedor(linha.id, linha.nome, linha.cpf, linha.comissao_percentual);
+        return new Vendedor(linha.id, linha.nome, linha.matricula, linha.comissao_percentual);
     }
 
     async existeMatricula(matricula: string): Promise<boolean> {

@@ -61,7 +61,7 @@ export class EstoqueRepositorio {
 
      async atualizarEstoque(estoqueData: any, id: number): Promise<Estoque> {
         let estoqueAtualizado = await executarComandoSQL(
-            "UPDATE Estoque SET carro = ?, quantidade = ?, localizacao_patio = ?, data_entrada = ?, WHERE id = ?",
+            "UPDATE Estoque SET carro = ?, quantidade = ?, localizacao_patio = ?, data_entrada = ? WHERE id = ?",
             [estoqueData.carro, estoqueData.quantidade, estoqueData.localizacao_patio, estoqueData.data_entrada, id] //ultima virgula possivelmente desnecessaria?
         );
         return estoqueAtualizado;
