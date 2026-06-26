@@ -40,7 +40,7 @@ export class ClienteController {
             const cliente = await this.clienteService.buscarPorID(idBusca)
             res.status(200).json(cliente)
         } catch (e: any) {
-            if (e.message === "Cliente nao encontrado") {
+            if (e.message === "Cliente não encontrado!!") {
                 res.status(404).json({ Message: e.message })
             } else {
                 res.status(400).json({ Message: "Erro desconhecido" })

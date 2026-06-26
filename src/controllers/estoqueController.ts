@@ -21,7 +21,7 @@ export class EstoqueController {
                 })
             }
             if (e.message === "Deve haver carro vinculado ao registro do estoque" || e.message === "O carro referenciado deve existir no sistema." || e.message === "Não pode existir mais de um registro de estoque ativo para o mesmo id_carro.") {
-                res.status(409).json({
+                res.status(404).json({
                     Message: e.message
                 })
             }
