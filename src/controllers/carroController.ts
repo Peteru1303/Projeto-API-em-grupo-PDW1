@@ -79,8 +79,9 @@ export class CarroController {
         } catch (e: any) {
             if (e.message === "Não é permitido remover um carro que possua registros em estoque." || e.message === "Não é permitido remover um carro que possua notas fiscais vinculadas.") {
                 res.status(422).json({ Message: e.message })
+            } else {
+                res.status(404).json({ Message: e.message })
             }
-            res.status(404).json({ Message: e.message })
         }
     }
 }

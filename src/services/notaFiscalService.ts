@@ -93,7 +93,8 @@ export class NotaFiscalService {
 
         if (estoqueCarro) {
             estoqueCarro.quantidade -= 1;
-            await this.estoqueRepository.atualizarEstoque(estoqueCarro, estoqueCarro.id!);
+            let idEstoque = Number(estoqueCarro.id);
+            await this.estoqueRepository.atualizarEstoque(estoqueCarro, idEstoque);
         }
     }
 }
