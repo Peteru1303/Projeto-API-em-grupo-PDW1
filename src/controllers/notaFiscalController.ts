@@ -43,7 +43,7 @@ export class NotaFiscalController {
             }
 
             if (e.message === "Os campos cliente, vendedor e carro são obrigatórios e devem ter registro no sistema") {
-                res.status(422).json({ Message: e.message })
+                res.status(404).json({ Message: e.message })
             }
         }
     }

@@ -13,7 +13,7 @@ export class NotaFiscalService {
     vendedorRepository = VendedorRepositorio.getInstance();
 
     async cadastrarNotaFiscal(notaFiscal: any): Promise<NotaFiscal> {
-        const { numero_nota, data_emissao, valor_total, cliente, vendedor, carro } = notaFiscal
+        const { numero_nota, data_emissao, valor_total, id_cliente: cliente, id_vendedor: vendedor, id_carro: carro } = notaFiscal
 
         //Regra 1: Uma nota fiscal somente pode ser emitida se o carro associado possuir quantidade > 0 em estoque.
         //Ao emitir, a quantidade em estoque é automaticamente decrementada em 1 unidade.
@@ -21,7 +21,7 @@ export class NotaFiscalService {
         const listEstoque = await this.estoqueRepository.listarEstoque(); //Faz a listagem do estoque
         const estoqueCarro = listEstoque.find(e => e.carro === carro); //Acha o estoque do carro associado
 
-        if (estoqueCarro && estoqueCarro.quantidade <= 0) { //Verifica se o estoque tem o carro e se tem quantidade
+        if (!estoqueCarro || estoqueCarro.quantidade <= 0) { //Verifica se o estoque tem o carro e se tem quantidade
             throw new Error("Precisa ter um carro no estoque");
         }
 
@@ -36,7 +36,7 @@ export class NotaFiscalService {
         }
 
         //Regra 3: O campo valor_total deve ser positivo e maior que zero.
-        if (valor_total < 0) {
+        if (valor_total <= 0) {
             throw new Error("O valor total deve ser maior que zero");
         }
 
@@ -55,13 +55,13 @@ export class NotaFiscalService {
         }
 
         //Regra 5: A data_emissao não pode ser uma data futura em relação à data atual do servidor.
-        if (data_emissao > Date.now()) {
+        if (new Date(data_emissao).getTime() > Date.now()) {
             throw new Error("A data de emissão tem que ser a data atual ou uma data anterior à atual")
         }
 
         const newNotaFiscal = new NotaFiscal(null, numero_nota, data_emissao, valor_total, cliente, vendedor, carro); 
 
-        this.notaFiscalRepository.inserirNotaFiscal(newNotaFiscal)
+        await this.notaFiscalRepository.inserirNotaFiscal(newNotaFiscal)
 
         await this.DecrementarEstoqueCarro(carro);
 
@@ -93,6 +93,7 @@ export class NotaFiscalService {
 
         if (estoqueCarro) {
             estoqueCarro.quantidade -= 1;
+            await this.estoqueRepository.atualizarEstoque(estoqueCarro, estoqueCarro.id!);
         }
     }
 }

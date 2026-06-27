@@ -16,13 +16,13 @@ export class EstoqueService {
     estoqueRepository = EstoqueRepositorio.getInstance();
 
     async cadastrarEstoque(estoque: any): Promise<Estoque> {
-        const {carro, quantidade, localizacao_patio, data_entrada } = estoque;
+        const { id_carro: carro, quantidade, localizacao_patio, data_entrada } = estoque;
 
         if (!carro) {
             throw new Error("Deve haver carro vinculado ao registro do estoque");
         }
 
-        const carroexiste = await this.carroRepository.buscarPorID(estoque.carro);
+        const carroexiste = await this.carroRepository.buscarPorID(carro);
         if (!carroexiste) {
             throw new Error("O carro referenciado deve existir no sistema.");
         }
@@ -44,14 +44,14 @@ export class EstoqueService {
         const listEstoque = await this.estoqueRepository.listarEstoque();
         const estoqueAtivo = listEstoque.find(e => e.carro === carro);
         if (estoqueAtivo) {
-            throw new Error("Não pode existir mais de um registro de estoque ativo para o mesmo carro.");
+            throw new Error("Não pode existir mais de um registro de estoque ativo para o mesmo id_carro.");
         }
 
         const newEstoque = new Estoque(null, carro, quantidade, localizacao_patio, dataEntrada);
 
-        this.estoqueRepository.novoEstoque(newEstoque);
+        const estoqueSalvo = await this.estoqueRepository.novoEstoque(newEstoque);
 
-        return newEstoque;
+        return estoqueSalvo;
     }
 
     async atualizarEstoque(estoqueData: any, id: number): Promise<Estoque> {
@@ -60,13 +60,13 @@ export class EstoqueService {
             throw new Error("Estoque nao encontrado");
         }
 
-        const {carro, quantidade, localizacao_patio, data_entrada } = estoqueData;
+        const { id_carro: carro, quantidade, localizacao_patio, data_entrada } = estoqueData;
 
         if (!carro) {
             throw new Error("Deve haver carro vinculado ao registro do estoque");
         }
 
-        const carroexiste = this.carroRepository.buscarPorID(estoqueData.carro);
+        const carroexiste = await this.carroRepository.buscarPorID(carro);
         if (!carroexiste) {
             throw new Error("O carro referenciado deve existir no sistema.");
         }

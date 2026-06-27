@@ -30,9 +30,9 @@ router.get('/clientes/notas/:id', (req: Request, res: Response) => { clienteCont
 
 router.get('/carros', (req: Request, res: Response) => { carroController.listarCarro(req, res); });
 
-router.get('/carros/:id', (req: Request, res: Response) => { carroController.buscaCarroPorID(req, res); });
-
 router.get('/carros/disponiveis', (req: Request, res: Response) => { carroController.listaCarroDisponivel(req, res); });
+
+router.get('/carros/:id', (req: Request, res: Response) => { carroController.buscaCarroPorID(req, res); });
 
 router.post('/carros', (req: Request, res: Response) => { carroController.cadastraCarro(req, res); });
 
